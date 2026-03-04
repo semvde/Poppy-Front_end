@@ -1,4 +1,4 @@
-// id, label, type en error erin om de input te krijgen
+// Benodigheden input; type, id, name & error
 function FormField({id, label, type = "text", error}) {
 
     const hasError = Boolean(error)
@@ -12,11 +12,9 @@ function FormField({id, label, type = "text", error}) {
 
             <input
                 className={`
-          p-5 rounded-xl bg-body-light
-          border border-outline
-          outline-none transition
-          ${hasError ? "border-(--color-error)" : ""}
-        `}
+                    p-5 rounded-xl bg-body-light border outline-none transition focus:ring-2 focus:ring-white/70
+                    ${hasError ? "border-(--color-error)" : "border-outline focus:border-primary"}
+                `}
                 type={type}
                 id={id}
                 name={id}
@@ -24,7 +22,7 @@ function FormField({id, label, type = "text", error}) {
             />
 
             {hasError && (
-                <p className="text-(--color-error)">
+                <p className="text-sm text-(--color-error)">
                     {error}
                 </p>
             )}
