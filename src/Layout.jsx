@@ -6,13 +6,13 @@ function Layout() {
             <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
                 {/*Mobile version*/}
                 <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
-                    <img src="/public/logo.png" alt="" className={"h-10"}/>
+                    <img src="/logo.png" alt="" className={"h-10"}/>
                     <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
                 </div>
                 {/*Desktop version*/}
                 <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
                     <div className={"flex items-center gap-20"}>
-                        <img src="/public/logo.png" alt="" className={"h-10"}/>
+                        <img src="/logo.png" alt="" className={"h-10"}/>
                         <NavLink to={"/"}>Home</NavLink>
                         <NavLink to={"/"}>Explore</NavLink>
                         <NavLink to={"/"}>Playlists</NavLink>
