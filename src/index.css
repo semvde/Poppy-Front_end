@@ -1,1 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 @import "tailwindcss";
+
+* {
+    box-sizing: border-box;
+    scrollbar-color: var(--color-primary) var(--body-background-color);
+    scrollbar-width: thin;
+}
+
+:root {
+    --color-base-100: #1e1e1e;
+    --color-base-200: #242038;
+    --color-base-300: #433C65;
+    --color-base-content: #F7ECE1;
+
+    --color-primary: #9067C6;
+    --color-primary-content: var(--color-base-content);
+    --color-secondary: #8D86C9;
+    --color-accent: #CAC4CE;
+
+    --color-error: #FF3B3B;
+    --color-warning: #FFCC00;
+    --color-info: #0063F7;
+    --color-success: #06C270;
+}
+
+html {
+    scroll-behavior: smooth;
+
+    --body-background-color: var(--color-base-100);
+    --body-background-lighter-color: var(--color-base-200);
+    --body-background-lightest-color: var(--color-base-300);
+
+    --primary-color: var(--color-primary);
+    --primary-hover-color: hsl(from var(--color-primary) h s calc(l + 15));
+    --secondary-color: var(--color-secondary);
+    --secondary-hover-color: hsl(from var(--color-secondary) h s calc(l + 15));
+    --outline-color: var(--color-accent);
+
+    --text-color: var(--color-base-content);
+}
+
+@theme {
+    --color-body: var(--body-background-color);
+    --color-body-light: var(--body-background-lighter-color);
+    --color-body-light-2: var(--body-background-lightest-color);
+
+    --color-primary: var(--primary-color);
+    --color-primary-hover: var(--primary-hover-color);
+
+    --color-secondary: var(--secondary-color);
+    --color-secondary-hover: var(--secondary-hover-color);
+
+    --color-outline: var(--outline-color);
+    --color-text: var(--text-color);
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 1.125rem;
+    color: var(--text-color);
+
+    background-color: var(--body-background-color);
+
+    min-height: 100vh;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+    font-weight: 600;
+
+    margin: 0;
+}
+
+h1 {
+    font-size: 3.75rem;
+}
+
+h2 {
+    font-size: 2.25rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+main {
+    flex-grow: 1;
+
+    min-width: min(1200px, 100%);
+    max-width: min(1200px, 100%);
+    margin: 0 auto;
+    padding: 0 12px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    background-color: var(--primary-color);
+    border-radius: calc(infinity * 1px);
+
+    transition: background-color;
+    transition-duration: 100ms;
+    cursor: pointer;
+
+    width: 36px;
+    height: 24px;
+}
+
+input[type=range]::-moz-range-thumb {
+    background-color: var(--primary-color);
+    border-radius: calc(infinity * 1px);
+
+    cursor: pointer;
+
+    width: 36px;
+    height: 24px;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    background-color: hsl(from var(--color-primary) h s calc(l - 15));
+}
+
+input[type=range]::-moz-range-thumb:hover {
+    background-color: hsl(from var(--color-primary) h s calc(l - 15));
+}
