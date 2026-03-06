@@ -12,7 +12,7 @@ function Button({
                     ...props
                 }) {
     const baseStyling =
-        "inline-flex self-start w-auto items-center text-text justify-center rounded-3xl transition focus:outline-none focus:ring-1 focus:ring-offset-1";
+        "inline-flex w-auto items-center text-text justify-center rounded-3xl transition focus:outline-none focus:ring-1 focus:ring-offset-1";
 
 
     const sizes = {
