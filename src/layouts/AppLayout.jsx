@@ -1,6 +1,6 @@
 import {NavLink, Outlet} from "react-router";
 
-function Layout() {
+function AppLayout() {
     return (
         <>
             <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
@@ -45,4 +45,4 @@ function Layout() {
     );
 }
 
-export default Layout;
+export default AppLayout;
