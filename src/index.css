@@ -94,6 +94,7 @@ h4 {
 }
 
 main {
+    position: relative;
     flex-grow: 1;
 
     min-width: min(1200px, 100%);

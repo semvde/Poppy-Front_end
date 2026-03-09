@@ -1,4 +1,5 @@
 import Button from "../../components/Button.jsx";
+import {Link} from "react-router";
 
 function Profile() {
     return (
@@ -9,13 +10,13 @@ function Profile() {
                          className={"aspect-square object-cover rounded-full w-20"}/>
                     <div className={"flex flex-col justify-center"}>
                         <h1 className={"text-3xl!"}>Jan with the Cap</h1>
-                        <span>@janmetdepet</span>
+                        <span className={"text-outline"}>@janmetdepet</span>
                     </div>
                 </div>
-                <div className={"flex flex-col gap-2.5 pt-2.5"}>
-                    <Button variant={"outline"}><i className={"mr-2.5 fa-solid fa-user-pen"}></i> Edit personal
-                        information</Button>
-                    <Button><i className={"mr-2.5 fa-solid fa-gear"}></i>Settings</Button>
+                <div className={"grid grid-cols-2 gap-2.5 pt-2.5"}>
+                    <Button variant={"outline"} size={"sm"}><i className={"mr-2.5 fa-solid fa-user-pen"}></i> Edit
+                        profile info</Button>
+                    <Button size={"sm"}><i className={"mr-2.5 fa-solid fa-gear"}></i>Settings</Button>
                 </div>
             </section>
 
