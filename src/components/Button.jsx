@@ -1,8 +1,8 @@
 import {Link} from "react-router";
 
 function Button({
-                    variant = "primary",
-                    size = "md",
+                    variant = "",
+                    size = "",
                     children,
                     className = "",
                     disabled = false,
