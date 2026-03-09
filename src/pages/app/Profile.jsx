@@ -22,7 +22,7 @@ function Profile() {
             <section className={"pb-10"}>
                 <div className={"flex flex-col gap-2.5"}>
                     <h2 className={"text-2xl!"}>Musical Bubble</h2>
-                    <Button><i className={"mr-2.5 fa-solid fa-chart-simple"}></i>Visualise</Button>
+                    <Button as={"link"} to={"/app/bubble"}><i className={"mr-2.5 fa-solid fa-chart-simple"}></i>Visualise</Button>
                 </div>
             </section>
 

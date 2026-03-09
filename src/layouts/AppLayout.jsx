@@ -1,28 +1,59 @@
-import {NavLink, Outlet} from "react-router";
+import {NavLink, Outlet, useMatches, useNavigate} from "react-router";
 
 function AppLayout() {
+    const matches = useMatches();
+    const navigate = useNavigate();
+
+    const isSubPage = matches.some(
+        match => match.handle?.page === "subpage"
+    );
+
     return (
         <>
-            <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
-                {/*Mobile version*/}
-                <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
-                    <img src="/logo.png" alt="" className={"h-10"}/>
-                    <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
-                </div>
-                {/*Desktop version*/}
-                <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
-                    <div className={"flex items-center gap-20"}>
-                        <img src="/logo.png" alt="" className={"h-10"}/>
-                        <NavLink to={"/"}>Home</NavLink>
-                        <NavLink to={"/"}>Explore</NavLink>
-                        <NavLink to={"/"}>Playlists</NavLink>
-                    </div>
-                    <div className={"flex items-center gap-10"}>
-                        <NavLink to={"/"}>Profile</NavLink>
+            {isSubPage ? (
+                <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
+                    {/*Mobile version*/}
+                    <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
+                        <i onClick={() => navigate((-1))} className="py-2.75 fa-solid fa-angles-left"
+                           aria-label={"Back to previous page"}></i>
                         <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
                     </div>
-                </div>
-            </header>
+                    {/*Desktop version*/}
+                    <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
+                        <div className={"flex items-center gap-20"}>
+                            <img src="/logo.png" alt="" className={"h-10"}/>
+                            <NavLink to={"/"}>Home</NavLink>
+                            <NavLink to={"/"}>Explore</NavLink>
+                            <NavLink to={"/"}>Playlists</NavLink>
+                        </div>
+                        <div className={"flex items-center gap-10"}>
+                            <NavLink to={"/"}>Profile</NavLink>
+                            <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                        </div>
+                    </div>
+                </header>
+            ) : (
+                <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
+                    {/*Mobile version*/}
+                    <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
+                        <img src="/logo.png" alt="" className={"h-10"}/>
+                        <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                    </div>
+                    {/*Desktop version*/}
+                    <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
+                        <div className={"flex items-center gap-20"}>
+                            <img src="/logo.png" alt="" className={"h-10"}/>
+                            <NavLink to={"/"}>Home</NavLink>
+                            <NavLink to={"/"}>Explore</NavLink>
+                            <NavLink to={"/"}>Playlists</NavLink>
+                        </div>
+                        <div className={"flex items-center gap-10"}>
+                            <NavLink to={"/"}>Profile</NavLink>
+                            <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                        </div>
+                    </div>
+                </header>
+            )}
 
             <main>
                 <Outlet/>
