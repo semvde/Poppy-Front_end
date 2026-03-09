@@ -16,19 +16,21 @@ function AppLayout() {
                     <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
                         <i onClick={() => navigate((-1))} className="py-2.75 fa-solid fa-angles-left"
                            aria-label={"Back to previous page"}></i>
-                        <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                        <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                            className="text-2xl fa-solid fa-gear"></i></NavLink>
                     </div>
                     {/*Desktop version*/}
                     <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
                         <div className={"flex items-center gap-20"}>
                             <img src="/logo.png" alt="" className={"h-10"}/>
-                            <NavLink to={"/"}>Home</NavLink>
-                            <NavLink to={"/"}>Explore</NavLink>
-                            <NavLink to={"/"}>Playlists</NavLink>
+                            <NavLink to={"/app"}>Home</NavLink>
+                            <NavLink to={"/app/explore"}>Explore</NavLink>
+                            <NavLink to={"/app/playlists"}>Playlists</NavLink>
                         </div>
                         <div className={"flex items-center gap-10"}>
-                            <NavLink to={"/"}>Profile</NavLink>
-                            <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                            <NavLink to={"/app/profile"}>Profile</NavLink>
+                            <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                                className="text-2xl fa-solid fa-gear"></i></NavLink>
                         </div>
                     </div>
                 </header>
@@ -37,19 +39,21 @@ function AppLayout() {
                     {/*Mobile version*/}
                     <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
                         <img src="/logo.png" alt="" className={"h-10"}/>
-                        <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                        <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                            className="text-2xl fa-solid fa-gear"></i></NavLink>
                     </div>
                     {/*Desktop version*/}
                     <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
                         <div className={"flex items-center gap-20"}>
                             <img src="/logo.png" alt="" className={"h-10"}/>
-                            <NavLink to={"/"}>Home</NavLink>
-                            <NavLink to={"/"}>Explore</NavLink>
-                            <NavLink to={"/"}>Playlists</NavLink>
+                            <NavLink to={"/app"}>Home</NavLink>
+                            <NavLink to={"/app/explore"}>Explore</NavLink>
+                            <NavLink to={"/app/playlists"}>Playlists</NavLink>
                         </div>
                         <div className={"flex items-center gap-10"}>
-                            <NavLink to={"/"}>Profile</NavLink>
-                            <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                            <NavLink to={"/app/profile"}>Profile</NavLink>
+                            <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                                className="text-2xl fa-solid fa-gear"></i></NavLink>
                         </div>
                     </div>
                 </header>
@@ -62,10 +66,14 @@ function AppLayout() {
             <footer className={"bg-black rounded-t-xl px-3 py-3"}>
                 {/*Mobile version*/}
                 <nav className={"flex items-center justify-between text-4xl max-w-300 mx-auto sm:hidden"}>
-                    <i className="fa-solid fa-layer-group" aria-label={"Home"}></i>
-                    <i className="fa-regular fa-compass" aria-label={"Explore"}></i>
-                    <i className="fa-solid fa-folder-open" aria-label={"Playlists"}></i>
-                    <i className="fa-regular fa-user" aria-label={"Profile"}></i>
+                    <NavLink to={"/app"} className={"flex items-center"} aria-label={"Home"}><i
+                        className="fa-solid fa-layer-group"></i></NavLink>
+                    <NavLink to={"/app/explore"} className={"flex items-center"} aria-label={"Explore"}><i
+                        className="fa-regular fa-compass"></i></NavLink>
+                    <NavLink to={"/app/playlists"} className={"flex items-center"} aria-label={"Playlists"}><i
+                        className="fa-solid fa-folder-open"></i></NavLink>
+                    <NavLink to={"/app/profile"} className={"flex items-center"} aria-label={"Profile"}><i
+                        className="fa-regular fa-user"></i></NavLink>
                 </nav>
                 {/*Desktop version*/}
                 <div className={"hidden text-sm text-center sm:block"}>
