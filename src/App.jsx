@@ -9,6 +9,7 @@ import Register from "./pages/website/Register.jsx";
 import Settings from "./pages/app/Settings.jsx";
 import Profile from "./pages/app/Profile.jsx";
 import Bubble from "./pages/app/Bubble.jsx";
+import Friends from "./pages/app/Friends.jsx";
 
 const router = createBrowserRouter([
     {
@@ -49,7 +50,12 @@ const router = createBrowserRouter([
                 path: "/app/bubble",
                 element: <Bubble/>,
                 handle: {page: "subpage"}
-            }
+            },
+            {
+                path: "/app/friends",
+                element: <Friends/>,
+                handle: {page: "subpage"}
+            },
         ]
     }
 ]);
