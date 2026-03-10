@@ -40,7 +40,8 @@ const router = createBrowserRouter([
             },
             {
                 path: "/app/settings",
-                element: <Settings/>
+                element: <Settings/>,
+                handle: {page: "subpage"}
             },
             {
                 path: "/app/profile",

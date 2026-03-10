@@ -99,7 +99,7 @@ main {
 
     min-width: min(1200px, 100%);
     max-width: min(1200px, 100%);
-    margin: 0 auto;
+    margin: 60px auto;
     padding: 0 12px;
 }
 
