@@ -1,6 +1,8 @@
 import Button from "../../components/Button.jsx";
 import {useState} from "react";
 import FormField from "../../components/FormField.jsx";
+import Slider from "../../components/Slider.jsx";
+import Toggle from "../../components/Toggle.jsx";
 
 function Settings() {
     const [activeTab, setActiveTab] = useState("tab1");
@@ -64,6 +66,17 @@ function Settings() {
                     </div>
 
                     <div className={"flex flex-col gap-5"}>{tabContent[activeTab]}</div>
+                </div>
+            </section>
+
+            <section className={"pb-10"}>
+                <h2 className={"text-2xl!"}>Preferences</h2>
+                <span className={"text-outline"}>Change how your algorithm recommends new music to you!</span>
+                <div className={"flex flex-col gap-5 mt-5"}>
+                    <Slider id={"familiar"} leftLabel={"Familiar"} rightLabel={"Adventurous"}/>
+                    <Slider id={"instrumental"} leftLabel={"Instrumental"} rightLabel={"Lyrical"}/>
+                    <Toggle id={"ignore-activity"} label={"Don't train algorithm temporarily"}/>
+                    <span className={"text-base text-outline -mt-6"}>Automatically disables in 00:00</span>
                 </div>
             </section>
         </>
