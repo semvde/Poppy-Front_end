@@ -15,9 +15,9 @@ function Register() {
             <h2 className={"text-xl! text-center"}>Or start from scratch</h2>
             <form onSubmit={(e) => e.preventDefault()} className={"flex flex-col grow gap-2.5"}>
                 <FormField id={"username"} label={"Username"}/>
-                <FormField id={"email"} label={"Email"}/>
-                <FormField id={"password"} label={"Password"}/>
-                <FormField id={"password_confirm"} label={"Confirm Password"}/>
+                <FormField id={"email"} label={"Email"} type={"email"}/>
+                <FormField id={"password"} label={"Password"} type={"password"}/>
+                <FormField id={"password_confirm"} label={"Confirm Password"} type={"password"}/>
                 <Toggle id={"tos"} label={"I accept the Terms & Conditions"}/>
                 <Button size={"lg"} type={"submit"} className={"mt-auto"}>Register</Button>
                 <Link to={"/login"} className={"text-outline text-center"}>I already have an account</Link>

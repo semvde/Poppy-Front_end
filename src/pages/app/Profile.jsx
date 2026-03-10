@@ -16,7 +16,7 @@ function Profile() {
                 <div className={"grid grid-cols-2 gap-2.5 pt-2.5"}>
                     <Button variant={"outline"} size={"sm"}><i className={"mr-2.5 fa-solid fa-user-pen"}></i> Edit
                         profile info</Button>
-                    <Button size={"sm"}><i className={"mr-2.5 fa-solid fa-gear"}></i>Settings</Button>
+                    <Button size={"sm"} as={"link"} to={"/app/settings"}><i className={"mr-2.5 fa-solid fa-gear"}></i>Settings</Button>
                 </div>
             </section>
 
