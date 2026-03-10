@@ -7,13 +7,8 @@ import Slider from "./Slider.jsx";
 const MusicCard = forwardRef(
     function MusicCard(props, ref) {
 
-        const song = {
-            "title": "Title",
-            "artist": "Artist",
-            "img": "/placeholder.png",
-            "url": "/559608__zhr__lonely-music.mp3",
-            "explanation": "This song is recommended because..."
-        }
+        //all other props go in rest
+        const {song, onSwipe, ...rest} = props;
 
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -134,16 +129,14 @@ const MusicCard = forwardRef(
 
             if (distance.current > swipeThreshold) {
                 console.log("liked")
-                cardRef.current.style.transform = `translateX(100vw)`;
 
-                audioRef.current.pause();
+                onSwipe("right", song);
 
             } else if (distance.current < -swipeThreshold) {
                 console.log("disliked")
 
-                cardRef.current.style.transform = `translateX(-100vw)`;
 
-                audioRef.current.pause();
+                onSwipe("left", song);
 
 
             } else {
@@ -152,6 +145,7 @@ const MusicCard = forwardRef(
             }
 
             distance.current = 0;
+            setFeedback("");
 
         }
 
@@ -164,101 +158,99 @@ const MusicCard = forwardRef(
 
 
         return (
-            <article className="p-10 flex justify-center">
+
+            <Card
+                ref={cardRef}
+                tabIndex={0}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+                onPointerLeave={handlePointerUp}
+                className="relative rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
+                aria-label={`Music card: ${song.title} by ${song.artist}`}
+                {...rest}>
 
 
-                <Card
-                    ref={cardRef}
-                    tabIndex={0}
-                    onPointerDown={handlePointerDown}
-                    onPointerMove={handlePointerMove}
-                    onPointerUp={handlePointerUp}
-                    onPointerCancel={handlePointerUp}
-                    onPointerLeave={handlePointerUp}
-                    className="relative rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
-                    aria-label={`Music card: ${song.title} by ${song.artist}`}
-                    {...props}>
+                <img src={song.img} alt={`Album cover of ${song.title} from ${song.artist}`}
+                     draggable={false}
+                     className=" object-cover w-64 h-64 mb-4 rounded-lg"/>
 
-
-                    <img src={song.img} alt={`Album cover of ${song.title} from ${song.artist}`}
-                         draggable={false}
-                         className=" object-cover w-64 h-64 mb-4 rounded-lg"/>
-
-                    <div className="flex justify-between">
-                        <div>
-                            <h3>{song.title}</h3>
-                            <h4>{song.artist}</h4>
-                        </div>
-                        <Button
-                            onClick={toggleRecom}
-                            className="px-0! py-0! h-full bg-none! shadow-md shadow-primary"
-                            aria-label={"Explanation of why this song is getting recommended"}>
-
-                            {/*AI icon or friend profile*/}
-                            <img src={"/favicon.png"} alt={"Recommendation info button"}
-                                 draggable={false}
-                                 className="w-7 h-7 s"/>
-                        </Button>
-
-                        {showRecom && (
-                            <div
-                                className="absolute bg-primary right-0 mt-6 mr-1 w-48 p-2 rounded shadow-lg">
-                                <p className="text-sm">{song.explanation}</p>
-                            </div>
-                        )}
+                <div className="flex justify-between">
+                    <div>
+                        <h3>{song.title}</h3>
+                        <h4>{song.artist}</h4>
                     </div>
+                    <Button
+                        onClick={toggleRecom}
+                        className="px-0! py-0! h-full bg-none! shadow-md shadow-primary"
+                        aria-label={"Explanation of why this song is getting recommended"}>
 
-                    <audio
-                        ref={audioRef}
-                        src={song.url}
-                        onTimeUpdate={updateProgress}
-                        onLoadedMetadata={loadDuration}
-                    />
+                        {/*AI icon or friend profile*/}
+                        <img src={"/favicon.png"} alt={"Recommendation info button"}
+                             draggable={false}
+                             className="w-7 h-7 s"/>
+                    </Button>
 
-                    {duration > 0 && (
-                        <Slider
-                            ref={progressRef}
-                            min="0"
-                            max={duration}
-                            value={progress}
-                            onChange={handleDragBar}
-                            leftLabel={formatTime(progress)}
-                            rightLabel={formatTime(duration)}
-                            aria-label={"Progress of the song"}
-                        />
-                    )}
-
-                    <div className="flex justify-center">
-                        <Button
-                            onClick={togglePlay}
-                            className="mt-2 w-full" variant={"secondary"}
-                            aria-label={isPlaying ? "Pause song" : "Play song"}
-                        >
-                            {isPlaying ? "⏸" : "▶"}
-                        </Button>
-                    </div>
-
-
-                    <div className="flex justify-between pt-2">
-                        <Button size={"sm"} variant={"secondary"} className="text-2xl!"
-                                aria-label={"Dislike song"}>😔</Button>
-                        <Button size={"sm"} variant={"secondary"} className="text-2xl!"
-                                aria-label={"Like song"}>❤️</Button>
-                    </div>
-
-                    {feedback && (
+                    {showRecom && (
                         <div
-                            className="absolute inset-0 flex items-center justify-center text-5xl font-bold pointer-events-none"
-                        >
-                            {feedback}
+                            className="absolute bg-primary right-0 mt-6 mr-1 w-48 p-2 rounded shadow-lg">
+                            <p className="text-sm">{song.explanation}</p>
                         </div>
                     )}
+                </div>
+
+                <audio
+                    ref={audioRef}
+                    src={song.url}
+                    onTimeUpdate={updateProgress}
+                    onLoadedMetadata={loadDuration}
+                />
+
+                {duration > 0 && (
+                    <Slider
+                        ref={progressRef}
+                        min="0"
+                        max={duration}
+                        value={progress}
+                        onChange={handleDragBar}
+                        leftLabel={formatTime(progress)}
+                        rightLabel={formatTime(duration)}
+                        aria-label={"Progress of the song"}
+                    />
+                )}
+
+                <div className="flex justify-center">
+                    <Button
+                        onClick={togglePlay}
+                        className="mt-2 w-full" variant={"secondary"}
+                        aria-label={isPlaying ? "Pause song" : "Play song"}
+                    >
+                        {isPlaying ? "⏸" : "▶"}
+                    </Button>
+                </div>
 
 
-                </Card>
+                <div className="flex justify-between pt-2">
+                    <Button size={"sm"} variant={"secondary"} className="text-2xl!"
+                            onClick={() => onSwipe("left", song)}
+                            aria-label={"Dislike song"}>😔</Button>
+                    <Button size={"sm"} variant={"secondary"} className="text-2xl!"
+                            onClick={() => onSwipe("right", song)}
+                            aria-label={"Like song"}>❤️</Button>
+                </div>
+
+                {feedback && (
+                    <div
+                        className="absolute inset-0 flex items-center justify-center text-5xl font-bold pointer-events-none"
+                    >
+                        {feedback}
+                    </div>
+                )}
 
 
-            </article>
+            </Card>
+
         )
     })
 
