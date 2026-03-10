@@ -11,7 +11,7 @@ function AppLayout() {
     return (
         <>
             {isSubPage ? (
-                <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
+                <header className={"fixed left-0 right-0 top-0 bg-black rounded-b-xl px-3 py-2.5 z-999"}>
                     {/*Mobile version*/}
                     <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
                         <i onClick={() => navigate((-1))} className="py-2.75 fa-solid fa-angles-left"
@@ -35,7 +35,7 @@ function AppLayout() {
                     </div>
                 </header>
             ) : (
-                <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
+                <header className={"fixed left-0 right-0 top-0 bg-black rounded-b-xl px-3 py-2.5 z-999"}>
                     {/*Mobile version*/}
                     <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
                         <img src="/logo.png" alt="" className={"h-10"}/>
@@ -63,7 +63,7 @@ function AppLayout() {
                 <Outlet/>
             </main>
 
-            <footer className={"bg-black rounded-t-xl px-3 py-3"}>
+            <footer className={"fixed left-0 right-0 bottom-0 bg-black rounded-t-xl px-3 py-3 sm:static z-999"}>
                 {/*Mobile version*/}
                 <nav className={"flex items-center justify-between text-4xl max-w-300 mx-auto sm:hidden"}>
                     <NavLink to={"/app"} className={"flex items-center"} aria-label={"Home"}><i

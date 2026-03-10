@@ -14,7 +14,7 @@ function WebsiteLayout() {
                 </div>
             </nav>
 
-            <main>
+            <main className={"my-0!"}>
                 <Outlet/>
             </main>
 
