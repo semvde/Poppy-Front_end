@@ -1,40 +1,79 @@
-import {NavLink, Outlet} from "react-router";
+import {NavLink, Outlet, useMatches, useNavigate} from "react-router";
 
 function AppLayout() {
+    const matches = useMatches();
+    const navigate = useNavigate();
+
+    const isSubPage = matches.some(
+        match => match.handle?.page === "subpage"
+    );
+
     return (
         <>
-            <header className={"bg-black rounded-b-xl px-3 py-2.5"}>
-                {/*Mobile version*/}
-                <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
-                    <img src="/logo.png" alt="" className={"h-10"}/>
-                    <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
-                </div>
-                {/*Desktop version*/}
-                <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
-                    <div className={"flex items-center gap-20"}>
+            {isSubPage ? (
+                <header className={"fixed left-0 right-0 top-0 bg-black rounded-b-xl px-3 py-2.5 z-999"}>
+                    {/*Mobile version*/}
+                    <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
+                        <i onClick={() => navigate((-1))} className="py-2.75 fa-solid fa-angles-left"
+                           aria-label={"Back to previous page"}></i>
+                        <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                            className="text-2xl fa-solid fa-gear"></i></NavLink>
+                    </div>
+                    {/*Desktop version*/}
+                    <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
+                        <div className={"flex items-center gap-20"}>
+                            <img src="/logo.png" alt="" className={"h-10"}/>
+                            <NavLink to={"/app"}>Home</NavLink>
+                            <NavLink to={"/app/explore"}>Explore</NavLink>
+                            <NavLink to={"/app/playlists"}>Playlists</NavLink>
+                        </div>
+                        <div className={"flex items-center gap-10"}>
+                            <NavLink to={"/app/profile"}>Profile</NavLink>
+                            <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                                className="text-2xl fa-solid fa-gear"></i></NavLink>
+                        </div>
+                    </div>
+                </header>
+            ) : (
+                <header className={"fixed left-0 right-0 top-0 bg-black rounded-b-xl px-3 py-2.5 z-999"}>
+                    {/*Mobile version*/}
+                    <div className={"flex items-center justify-between max-w-300 mx-auto sm:hidden"}>
                         <img src="/logo.png" alt="" className={"h-10"}/>
-                        <NavLink to={"/"}>Home</NavLink>
-                        <NavLink to={"/"}>Explore</NavLink>
-                        <NavLink to={"/"}>Playlists</NavLink>
+                        <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                            className="text-2xl fa-solid fa-gear"></i></NavLink>
                     </div>
-                    <div className={"flex items-center gap-10"}>
-                        <NavLink to={"/"}>Profile</NavLink>
-                        <i className="text-2xl fa-solid fa-gear" aria-label={"Settings"}></i>
+                    {/*Desktop version*/}
+                    <div className={"hidden items-center justify-between max-w-300 mx-auto sm:flex"}>
+                        <div className={"flex items-center gap-20"}>
+                            <img src="/logo.png" alt="" className={"h-10"}/>
+                            <NavLink to={"/app"}>Home</NavLink>
+                            <NavLink to={"/app/explore"}>Explore</NavLink>
+                            <NavLink to={"/app/playlists"}>Playlists</NavLink>
+                        </div>
+                        <div className={"flex items-center gap-10"}>
+                            <NavLink to={"/app/profile"}>Profile</NavLink>
+                            <NavLink to={"/app/settings"} className={"flex items-center"} aria-label={"Settings"}><i
+                                className="text-2xl fa-solid fa-gear"></i></NavLink>
+                        </div>
                     </div>
-                </div>
-            </header>
+                </header>
+            )}
 
             <main>
                 <Outlet/>
             </main>
 
-            <footer className={"bg-black rounded-t-xl px-3 py-3"}>
+            <footer className={"fixed left-0 right-0 bottom-0 bg-black rounded-t-xl px-3 py-3 sm:static z-999"}>
                 {/*Mobile version*/}
                 <nav className={"flex items-center justify-between text-4xl max-w-300 mx-auto sm:hidden"}>
-                    <i className="fa-solid fa-layer-group" aria-label={"Home"}></i>
-                    <i className="fa-regular fa-compass" aria-label={"Explore"}></i>
-                    <i className="fa-solid fa-folder-open" aria-label={"Playlists"}></i>
-                    <i className="fa-regular fa-user" aria-label={"Profile"}></i>
+                    <NavLink to={"/app"} className={"flex items-center"} aria-label={"Home"}><i
+                        className="fa-solid fa-layer-group"></i></NavLink>
+                    <NavLink to={"/app/explore"} className={"flex items-center"} aria-label={"Explore"}><i
+                        className="fa-regular fa-compass"></i></NavLink>
+                    <NavLink to={"/app/playlists"} className={"flex items-center"} aria-label={"Playlists"}><i
+                        className="fa-solid fa-folder-open"></i></NavLink>
+                    <NavLink to={"/app/profile"} className={"flex items-center"} aria-label={"Profile"}><i
+                        className="fa-regular fa-user"></i></NavLink>
                 </nav>
                 {/*Desktop version*/}
                 <div className={"hidden text-sm text-center sm:block"}>

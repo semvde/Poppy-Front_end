@@ -6,6 +6,10 @@ import Login from "./pages/website/Login.jsx";
 import Index from "./pages/website/Index.jsx";
 import Home from "./pages/app/Home.jsx";
 import Register from "./pages/website/Register.jsx";
+import Settings from "./pages/app/Settings.jsx";
+import Profile from "./pages/app/Profile.jsx";
+import Bubble from "./pages/app/Bubble.jsx";
+import Friends from "./pages/app/Friends.jsx";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +37,26 @@ const router = createBrowserRouter([
             {
                 path: "/app",
                 element: <Home/>
-            }
+            },
+            {
+                path: "/app/settings",
+                element: <Settings/>,
+                handle: {page: "subpage"}
+            },
+            {
+                path: "/app/profile",
+                element: <Profile/>
+            },
+            {
+                path: "/app/bubble",
+                element: <Bubble/>,
+                handle: {page: "subpage"}
+            },
+            {
+                path: "/app/friends",
+                element: <Friends/>,
+                handle: {page: "subpage"}
+            },
         ]
     }
 ]);
