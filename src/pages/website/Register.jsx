@@ -7,12 +7,6 @@ function Register() {
     return (
         <section className={"flex flex-col gap-5 min-h-[calc(100dvh-104px)] py-10"}>
             <h1 className={"text-3xl! text-center"}>Let's create an account</h1>
-            <h2 className={"text-xl! text-center"}>Import from</h2>
-            <Button><i className={"fa-brands fa-spotify"}></i> Spotify</Button>
-            <Button><i className={"fa-brands fa-youtube"}></i> YouTube Music</Button>
-            <Button><i className="fa-brands fa-itunes-note"></i> Apple Music</Button>
-            <hr/>
-            <h2 className={"text-xl! text-center"}>Or start from scratch</h2>
             <form onSubmit={(e) => e.preventDefault()} className={"flex flex-col grow gap-2.5"}>
                 <FormField id={"username"} label={"Username"}/>
                 <FormField id={"email"} label={"Email"} type={"email"}/>
