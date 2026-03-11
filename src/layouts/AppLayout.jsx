@@ -1,4 +1,5 @@
 import {NavLink, Outlet, useMatches, useNavigate} from "react-router";
+import Explore from "../pages/app/Explore.jsx";
 
 function AppLayout() {
     const matches = useMatches();
@@ -47,7 +48,7 @@ function AppLayout() {
                         <div className={"flex items-center gap-20"}>
                             <img src="/logo.png" alt="" className={"h-10"}/>
                             <NavLink to={"/app"}>Home</NavLink>
-                            <NavLink to={"/app/explore"}>Explore</NavLink>
+                            <NavLink to={"../pages/app/Explore.jsx"}>Explore</NavLink>
                             <NavLink to={"/app/playlists"}>Playlists</NavLink>
                         </div>
                         <div className={"flex items-center gap-10"}>
