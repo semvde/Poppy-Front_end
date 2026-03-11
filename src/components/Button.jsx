@@ -12,7 +12,7 @@ function Button({
                     ...props
                 }) {
     const baseStyling =
-        "inline-flex self-start w-auto items-center text-text justify-center rounded-3xl transition focus:outline-none focus:ring-1 focus:ring-offset-1";
+        "inline-flex w-auto items-center text-text justify-center rounded-3xl cursor-pointer";
 
 
     const sizes = {
@@ -24,7 +24,7 @@ function Button({
     const variants = {
         primary: "bg-primary hover:bg-primary-hover focus:ring-outline disabled:bg-primary/40 disabled:text-text/40 disabled:cursor-not-allowed",
         secondary: "bg-secondary hover:bg-secondary-hover hover:text-body focus:ring-outline disabled:bg-secondary/40 disabled:text-text/40 disabled:cursor-not-allowed",
-        outline: "border border-outline hover:bg-primary/50 focus:bg-primary"
+        outline: "border border-outline hover:bg-primary/50 transition focus:outline-none focus:ring-1 focus:ring-offset-1"
     };
 
     //bepalen welke van de twee nodig is
