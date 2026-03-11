@@ -152,6 +152,7 @@ const MusicCard = forwardRef(
                 console.log("liked")
 
                 setSwipeStatus("liked");
+                //if onswipe isnt passed no error
                 onSwipe?.("right", song);
 
 
