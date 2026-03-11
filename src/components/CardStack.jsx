@@ -1,7 +1,9 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import MusicCard from "./MusicCard.jsx";
 
 function CardStack() {
+
+    const [message, setMessage] = useState("");
 
     const [songs, setSongs] = useState([
         {
@@ -33,13 +35,39 @@ function CardStack() {
     function handleSwipe(direction, song) {
         console.log(direction, song.title);
 
+        if (direction === "right") {
+            setMessage(`Successfully liked ❤️ ${song.title}`);
+        } else {
+            setMessage(`Successfully disliked 😔 ${song.title}`);
+        }
+
+
         //remove previous card
         setSongs(prev => prev.slice(1));
     }
 
+    //succesfully swiped message
+    useEffect(() => {
+        if (!message) return;
+
+        const timer = setTimeout(() => {
+            setMessage("");
+        }, 1500);
+
+        return () => clearTimeout(timer);
+    }, [message]);
+
     return (
 
-        <div className="p-10 flex justify-center items-center w-full">
+        <div className="p-10 flex flex-col justify-center items-center w-full">
+
+            {message && (
+                <div className="mb-4 text-center text-color-info font-semibold text-lg">
+                    {message}
+                </div>
+            )}
+
+
             <div className="relative w-72 sm:w-80 md:w-96 h-96">
                 {songs.map((song, index) => {
                     const isOnTop = index === 0;
