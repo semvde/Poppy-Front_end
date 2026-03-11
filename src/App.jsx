@@ -12,6 +12,7 @@ import Bubble from "./pages/app/Bubble.jsx";
 import Friends from "./pages/app/Friends.jsx";
 import Explore from "./pages/app/Explore.jsx";
 import Onboarding from "./pages/app/Onboarding.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
         ]
     },
     {
-        element: <AppLayout/>,
+        element: (
+            <ProtectedRoute>
+                <AppLayout/>
+            </ProtectedRoute>
+        ),
         errorElement: <ErrorElement/>,
         children: [
             {
