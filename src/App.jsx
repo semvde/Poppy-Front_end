@@ -10,6 +10,7 @@ import Settings from "./pages/app/Settings.jsx";
 import Profile from "./pages/app/Profile.jsx";
 import Bubble from "./pages/app/Bubble.jsx";
 import Friends from "./pages/app/Friends.jsx";
+import Onboarding from "./pages/app/Onboarding.jsx";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
         element: <AppLayout/>,
         errorElement: <ErrorElement/>,
         children: [
+            {
+                path: "/app/onboarding",
+                element: <Onboarding/>
+            },
             {
                 path: "/app",
                 element: <Home/>
