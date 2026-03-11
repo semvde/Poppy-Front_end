@@ -4,7 +4,7 @@ function Explore() {
     return (
         <>
             {/*searchbar*/}
-            <section className="p-5 space-y-5">
+            <section className="py-10 space-y-5">
 
                 <div className="flex items-center gap-2 bg-body-light rounded-4xl px-4 py-2">
                     <i className="fa-solid fa-magnifying-glass"></i>
@@ -19,21 +19,27 @@ function Explore() {
             </section>
 
             {/*Your top genres*/}
-            <section className="px-5 pb-5 space-y-3 max-w-sm">
+            <section className="pb-10 space-y-3 max-w-sm">
                 <h1 className="text-xl! p-2.5">
                     Your top genres
                 </h1>
 
-                <div className="grid grid-cols-2 gap-2">
-                    <Button as="link" className="h-10 p-0 flex pl-0 rounded!">
-                        <img src="/placeholder.jpg" alt="" className="h-10 w-10 -ml-8"/>
-                        <span className="px-4 font-semibold">Rock</span>
-                    </Button>
+                <div className={"grid grid-cols-2 gap-2.5"}>
+                    <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
+                        <img src="/placeholder.jpg" alt=""
+                             className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
+                        <span className={"col-start-3 col-end-8"}>Genre Title</span>
+                    </div>
+                    <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
+                        <img src="/placeholder.jpg" alt=""
+                             className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
+                        <span className={"col-start-3 col-end-8"}>Genre Title</span>
+                    </div>
                 </div>
             </section>
 
             {/*Explore new genres*/}
-            <section className="px-5 pb-5 space-y-3">
+            <section className="pb-10 space-y-3">
                 <h1 className="text-xl! p-2.5">
                     Explore new genres
                 </h1>
@@ -51,7 +57,7 @@ function Explore() {
             </section>
 
             {/*    Explore subgenres*/}
-            <section className="px-5 pb-5 space-y-3">
+            <section className="pb-10 space-y-3">
                 <h1 className="text-xl! p-2.5">
                     Explore new subgenre
                 </h1>
