@@ -1,5 +1,5 @@
 // Benodigheden input; type, id, name & error
-function FormField({id, label, type = "text", error}) {
+function FormField({id, label, type = "text", error, ...props}) {
 
     const hasError = Boolean(error)
 
@@ -19,6 +19,7 @@ function FormField({id, label, type = "text", error}) {
                 id={id}
                 name={id}
                 aria-invalid={hasError}
+                {...props}
             />
 
             {hasError && (
