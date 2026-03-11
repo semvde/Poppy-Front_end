@@ -8,7 +8,7 @@ const MusicCard = forwardRef(
     function MusicCard(props, ref) {
 
         //all other props go in rest
-        const {song, onSwipe, ...rest} = props;
+        const {song = {}, onSwipe, ...rest} = props;
 
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -19,6 +19,7 @@ const MusicCard = forwardRef(
         let isDraggingCard = useRef(false);
 
         const [feedback, setFeedback] = useState("");
+        const [swipeStatus, setSwipeStatus] = useState(null);
 
 
         const audioRef = useRef(null);
@@ -29,9 +30,21 @@ const MusicCard = forwardRef(
 
         const [showRecom, setShowRecom] = useState(false);
 
+        //error
+        const [audioError, setAudioError] = useState(null);
+
+        const [isLoading, setIsLoading] = useState(true);
+
 
         // reset slider with new song
         useEffect(() => {
+
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+
+            setIsPlaying(false);
             setProgress(0);
             setDuration(0);
         }, [song.url]);
@@ -43,14 +56,22 @@ const MusicCard = forwardRef(
             }
         }, [progress]);
 
-        function togglePlay() {
+        async function togglePlay() {
             const audio = audioRef.current;
 
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                audio.play();
+            if (!audio) return;
+
+            try {
+                if (isPlaying) {
+                    audio.pause();
+                } else {
+                    await audio.play();
+                }
+            } catch (error) {
+                setAudioError("Failed to play");
+                console.error(error);
             }
+
 
             setIsPlaying(!isPlaying);
         }
@@ -130,13 +151,16 @@ const MusicCard = forwardRef(
             if (distance.current > swipeThreshold) {
                 console.log("liked")
 
-                onSwipe("right", song);
+                setSwipeStatus("liked");
+                //if onswipe isnt passed no error
+                onSwipe?.("right", song);
+
 
             } else if (distance.current < -swipeThreshold) {
                 console.log("disliked")
 
-
-                onSwipe("left", song);
+                setSwipeStatus("disliked");
+                onSwipe?.("left", song);
 
 
             } else {
@@ -204,8 +228,17 @@ const MusicCard = forwardRef(
                     ref={audioRef}
                     src={song.url}
                     onTimeUpdate={updateProgress}
-                    onLoadedMetadata={loadDuration}
+                    onLoadedMetadata={() => {
+                        loadDuration();
+                        setIsLoading(false)
+                    }}
+                    onError={() => {
+                        setAudioError("Can't load audio")
+                        setIsLoading(false);
+                    }}
                 />
+
+                {isLoading && <p className="text-sm">Loading audio....</p>}
 
                 {duration > 0 && (
                     <Slider
@@ -218,6 +251,12 @@ const MusicCard = forwardRef(
                         rightLabel={formatTime(duration)}
                         aria-label={"Progress of the song"}
                     />
+                )}
+
+                {audioError && (
+                    <p className="text-red-500 text-sm mt-2">
+                        {audioError}
+                    </p>
                 )}
 
                 <div className="flex justify-center">
@@ -247,7 +286,6 @@ const MusicCard = forwardRef(
                         {feedback}
                     </div>
                 )}
-
 
             </Card>
 

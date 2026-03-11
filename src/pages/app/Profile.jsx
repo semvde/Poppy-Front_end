@@ -13,7 +13,7 @@ function Profile() {
                         <h1 className={"text-3xl!"}>@janmetdepet</h1>
                         <div className={"grid grid-cols-2 gap-2.5 pt-2.5"}>
                             <Button variant={"outline"} size={"sm"}>Edit Profile</Button>
-                            <Button size={"sm"}>Settings</Button>
+                            <Button size={"sm"} as={"link"} to={"/app/settings"}>Settings</Button>
                         </div>
                     </div>
                 </div>

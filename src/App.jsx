@@ -11,6 +11,7 @@ import Profile from "./pages/app/Profile.jsx";
 import Bubble from "./pages/app/Bubble.jsx";
 import Friends from "./pages/app/Friends.jsx";
 import Explore from "./pages/app/Explore.jsx";
+import Onboarding from "./pages/app/Onboarding.jsx";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement/>,
         children: [
             {
+                path: "/app/onboarding",
+                element: <Onboarding/>
+            },
+            {
                 path: "/app",
                 element: <Home/>
             },
@@ -60,8 +65,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/app/explore",
-                element: <Explore/>,
-                handle: {page: "subpage"}
+                element: <Explore/>
             },
         ]
     }
