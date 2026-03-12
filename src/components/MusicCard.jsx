@@ -191,7 +191,7 @@ const MusicCard = forwardRef(
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
                 onPointerLeave={handlePointerUp}
-                className="relative rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
+                className="rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
                 aria-label={`Music card: ${song.title} by ${song.artist}`}
                 {...rest}>
 

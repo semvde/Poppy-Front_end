@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import MusicCard from "./MusicCard.jsx";
 
 function CardStack() {
-
     const [message, setMessage] = useState("");
 
     const [songs, setSongs] = useState([
@@ -36,11 +35,10 @@ function CardStack() {
         console.log(direction, song.title);
 
         if (direction === "right") {
-            setMessage(`Successfully liked ❤️ ${song.title}`);
+            setMessage(`❤️ Successfully liked ${song.title}`);
         } else {
-            setMessage(`Successfully disliked 😔 ${song.title}`);
+            setMessage(`😔 Successfully disliked ${song.title}`);
         }
-
 
         //remove previous card
         setSongs(prev => prev.slice(1));
@@ -59,7 +57,7 @@ function CardStack() {
 
     return (
 
-        <div className="p-10 flex flex-col justify-center items-center w-full">
+        <div className="p-10 flex flex-col items-center w-full min-h-[calc(100dvh-104px)]">
 
             {message && (
                 <div className="mb-4 text-center text-color-info font-semibold text-lg">
@@ -67,8 +65,7 @@ function CardStack() {
                 </div>
             )}
 
-
-            <div className="relative w-72 sm:w-80 md:w-96 h-96">
+            <div className="flex flex-col items-center relative w-72 sm:w-80 md:w-96 min-h-fit">
                 {songs.map((song, index) => {
                     const isOnTop = index === 0;
                     return (
@@ -81,7 +78,7 @@ function CardStack() {
                             //dynamic
                             style={{
                                 //stack cards behind each other
-                                position: "absolute",
+                                position: "absolute", margin: 'auto',
 
                                 //stacking order
                                 zIndex: songs.length - index,
