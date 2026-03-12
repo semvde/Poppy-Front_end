@@ -180,7 +180,6 @@ const MusicCard = forwardRef(
             setShowRecom(!showRecom);
         }
 
-
         return (
 
             <Card
@@ -196,9 +195,12 @@ const MusicCard = forwardRef(
                 {...rest}>
 
 
-                <img src={song.img} alt={`Album cover of ${song.title} from ${song.artist}`}
-                     draggable={false}
-                     className=" object-cover w-64 h-64 mb-4 rounded-lg"/>
+                <img
+                    src={song.albumImages?.[0]?.url ?? '/placeholder.jpg'}
+                    alt={`Album cover of ${song.title} from ${song.artist}`}
+                    draggable={false}
+                    className="object-cover w-64 h-64 mb-4 rounded-lg"
+                />
 
                 <div className="flex justify-between">
                     <div>
@@ -224,21 +226,21 @@ const MusicCard = forwardRef(
                     )}
                 </div>
 
-                <audio
-                    ref={audioRef}
-                    src={song.url}
-                    onTimeUpdate={updateProgress}
-                    onLoadedMetadata={() => {
-                        loadDuration();
-                        setIsLoading(false)
-                    }}
-                    onError={() => {
-                        setAudioError("Can't load audio")
-                        setIsLoading(false);
-                    }}
-                />
+                {/*<audio*/}
+                {/*    ref={audioRef}*/}
+                {/*    src={song.url}*/}
+                {/*    onTimeUpdate={updateProgress}*/}
+                {/*    onLoadedMetadata={() => {*/}
+                {/*        loadDuration();*/}
+                {/*        setIsLoading(false)*/}
+                {/*    }}*/}
+                {/*    onError={() => {*/}
+                {/*        setAudioError("Can't load audio")*/}
+                {/*        setIsLoading(false);*/}
+                {/*    }}*/}
+                {/*/>*/}
 
-                {isLoading && <p className="text-sm">Loading audio....</p>}
+                {/*{isLoading && <p className="text-sm">Loading audio....</p>}*/}
 
                 {duration > 0 && (
                     <Slider
