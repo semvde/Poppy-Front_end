@@ -13,6 +13,7 @@ import Friends from "./pages/app/Friends.jsx";
 import Explore from "./pages/app/Explore.jsx";
 import Onboarding from "./pages/app/Onboarding.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProfileEdit from "./pages/app/ProfileEdit.jsx";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,11 @@ const router = createBrowserRouter([
             {
                 path: "/app/profile",
                 element: <Profile/>
+            },
+            {
+                path: "/app/profile/edit",
+                element: <ProfileEdit/>,
+                handle: {page: "subpage"}
             },
             {
                 path: "/app/bubble",
