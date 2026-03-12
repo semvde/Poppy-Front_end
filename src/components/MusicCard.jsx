@@ -180,7 +180,6 @@ const MusicCard = forwardRef(
             setShowRecom(!showRecom);
         }
 
-
         return (
 
             <Card
@@ -191,14 +190,17 @@ const MusicCard = forwardRef(
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
                 onPointerLeave={handlePointerUp}
-                className="relative rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
+                className="rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
                 aria-label={`Music card: ${song.title} by ${song.artist}`}
                 {...rest}>
 
 
-                <img src={song.img} alt={`Album cover of ${song.title} from ${song.artist}`}
-                     draggable={false}
-                     className=" object-cover w-64 h-64 mb-4 rounded-lg"/>
+                <img
+                    src={song.albumImages?.[0]?.url ?? '/placeholder.jpg'}
+                    alt={`Album cover of ${song.title} from ${song.artist}`}
+                    draggable={false}
+                    className="object-cover w-64 h-64 mb-4 rounded-lg"
+                />
 
                 <div className="flex justify-between">
                     <div>
@@ -224,21 +226,21 @@ const MusicCard = forwardRef(
                     )}
                 </div>
 
-                <audio
-                    ref={audioRef}
-                    src={song.url}
-                    onTimeUpdate={updateProgress}
-                    onLoadedMetadata={() => {
-                        loadDuration();
-                        setIsLoading(false)
-                    }}
-                    onError={() => {
-                        setAudioError("Can't load audio")
-                        setIsLoading(false);
-                    }}
-                />
+                {/*<audio*/}
+                {/*    ref={audioRef}*/}
+                {/*    src={song.url}*/}
+                {/*    onTimeUpdate={updateProgress}*/}
+                {/*    onLoadedMetadata={() => {*/}
+                {/*        loadDuration();*/}
+                {/*        setIsLoading(false)*/}
+                {/*    }}*/}
+                {/*    onError={() => {*/}
+                {/*        setAudioError("Can't load audio")*/}
+                {/*        setIsLoading(false);*/}
+                {/*    }}*/}
+                {/*/>*/}
 
-                {isLoading && <p className="text-sm">Loading audio....</p>}
+                {/*{isLoading && <p className="text-sm">Loading audio....</p>}*/}
 
                 {duration > 0 && (
                     <Slider

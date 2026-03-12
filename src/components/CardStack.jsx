@@ -1,46 +1,33 @@
 import {useEffect, useState} from "react";
 import MusicCard from "./MusicCard.jsx";
+import {fetchAPI} from "../services/Fetch.js";
 
 function CardStack() {
-
     const [message, setMessage] = useState("");
 
-    const [songs, setSongs] = useState([
-        {
-            id: 1,
-            title: "Title 1",
-            artist: "Artist 1",
-            img: "/placeholder.png",
-            url: "/559608__zhr__lonely-music.mp3",
-            explanation: "This song is recommended because..."
-        },
-        {
-            id: 2,
-            title: "Title 2",
-            artist: "Artist 2",
-            img: "/placeholder.png",
-            url: "/559608__zhr__lonely-music.mp3",
-            explanation: "You might like this because..."
-        },
-        {
-            id: 3,
-            title: "Title 3",
-            artist: "Artist 3",
-            img: "/placeholder.png",
-            url: "/559608__zhr__lonely-music.mp3",
-            explanation: "Recommended for you..."
-        }
-    ])
+    const getRecommendations = async () => {
+        const {vector} = await fetchAPI('/profile/compute', 'POST')
+
+        const {tracks} = await fetchAPI('/recommendations', 'POST', {
+            'profileVector': vector,
+            'limit': 5
+        })
+
+        console.log(tracks);
+
+        setSongs(tracks);
+    }
+
+    const [songs, setSongs] = useState([{}])
 
     function handleSwipe(direction, song) {
         console.log(direction, song.title);
 
         if (direction === "right") {
-            setMessage(`Successfully liked ❤️ ${song.title}`);
+            setMessage(`❤️ Successfully liked ${song.title}`);
         } else {
-            setMessage(`Successfully disliked 😔 ${song.title}`);
+            setMessage(`😔 Successfully disliked ${song.title}`);
         }
-
 
         //remove previous card
         setSongs(prev => prev.slice(1));
@@ -57,9 +44,13 @@ function CardStack() {
         return () => clearTimeout(timer);
     }, [message]);
 
+    useEffect(() => {
+        getRecommendations();
+    }, []);
+
     return (
 
-        <div className="p-10 flex flex-col justify-center items-center w-full">
+        <div className="p-10 flex flex-col items-center w-full min-h-[calc(100dvh-104px)]">
 
             {message && (
                 <div className="mb-4 text-center text-color-info font-semibold text-lg">
@@ -67,21 +58,20 @@ function CardStack() {
                 </div>
             )}
 
-
-            <div className="relative w-72 sm:w-80 md:w-96 h-96">
+            <div className="flex flex-col items-center relative w-72 sm:w-80 md:w-96 min-h-fit">
                 {songs.map((song, index) => {
                     const isOnTop = index === 0;
                     return (
                         <MusicCard
-                            key={song.id}
-                            song={song}
+                            key={index}
+                            song={song.track}
                             onSwipe={handleSwipe}
                             aria-label={`Stack of music cards`}
 
                             //dynamic
                             style={{
                                 //stack cards behind each other
-                                position: "absolute",
+                                position: "absolute", margin: 'auto',
 
                                 //stacking order
                                 zIndex: songs.length - index,
