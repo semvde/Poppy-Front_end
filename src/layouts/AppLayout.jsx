@@ -1,4 +1,5 @@
 import {NavLink, Outlet, useMatches, useNavigate} from "react-router";
+import Explore from "../pages/app/Explore.jsx";
 
 function AppLayout() {
     const matches = useMatches();

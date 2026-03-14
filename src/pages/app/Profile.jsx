@@ -1,18 +1,36 @@
 import Button from "../../components/Button.jsx";
 import {Link} from "react-router";
 import Card from "../../components/Card.jsx";
+import {useEffect, useState} from "react";
+import {fetchAPI} from "../../services/Fetch.js";
 
 function Profile() {
+    const [user, setUser] = useState({});
+    let image = '/placeholder.jpg';
+
+    const getGenres = async () => {
+        const res = await fetchAPI('/auth/me');
+
+        setUser(res);
+
+        if (user.imageUrl !== undefined) image = user.imageUrl;
+    }
+
+    useEffect(() => {
+        getGenres();
+    }, []);
+
     return (
         <>
             <section className={"py-10"}>
                 <div className={"flex items-center gap-5"}>
-                    <img src="/favicon.png" alt="Profile Image"
+                    <img src={image} alt="Profile Image"
                          className={"aspect-square object-cover rounded-full w-20"}/>
                     <div className={"flex flex-col justify-center w-full"}>
-                        <h1 className={"text-3xl!"}>@janmetdepet</h1>
+                        <h1 className={"text-3xl!"}>@{user.username}</h1>
                         <div className={"grid grid-cols-2 gap-2.5 pt-2.5"}>
-                            <Button variant={"outline"} size={"sm"}>Edit Profile</Button>
+                            <Button variant={"outline"} size={"sm"} as={"link"} to={"/app/profile/edit"}>Edit
+                                Profile</Button>
                             <Button size={"sm"} as={"link"} to={"/app/settings"}>Settings</Button>
                         </div>
                     </div>

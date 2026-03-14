@@ -10,7 +10,10 @@ import Settings from "./pages/app/Settings.jsx";
 import Profile from "./pages/app/Profile.jsx";
 import Bubble from "./pages/app/Bubble.jsx";
 import Friends from "./pages/app/Friends.jsx";
+import Explore from "./pages/app/Explore.jsx";
 import Onboarding from "./pages/app/Onboarding.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProfileEdit from "./pages/app/ProfileEdit.jsx";
 
 const router = createBrowserRouter([
     {
@@ -32,7 +35,11 @@ const router = createBrowserRouter([
         ]
     },
     {
-        element: <AppLayout/>,
+        element: (
+            <ProtectedRoute>
+                <AppLayout/>
+            </ProtectedRoute>
+        ),
         errorElement: <ErrorElement/>,
         children: [
             {
@@ -53,6 +60,11 @@ const router = createBrowserRouter([
                 element: <Profile/>
             },
             {
+                path: "/app/profile/edit",
+                element: <ProfileEdit/>,
+                handle: {page: "subpage"}
+            },
+            {
                 path: "/app/bubble",
                 element: <Bubble/>,
                 handle: {page: "subpage"}
@@ -61,6 +73,10 @@ const router = createBrowserRouter([
                 path: "/app/friends",
                 element: <Friends/>,
                 handle: {page: "subpage"}
+            },
+            {
+                path: "/app/explore",
+                element: <Explore/>
             },
         ]
     }
