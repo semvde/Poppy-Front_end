@@ -14,6 +14,8 @@ import Explore from "./pages/app/Explore.jsx";
 import Onboarding from "./pages/app/Onboarding.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ProfileEdit from "./pages/app/ProfileEdit.jsx";
+import AdminLayout from "./layouts/AdminLayout.jsx";
+import Dashboard from "./pages/app/admin/Dashboard.jsx";
 
 const router = createBrowserRouter([
     {
@@ -78,6 +80,21 @@ const router = createBrowserRouter([
                 path: "/app/explore",
                 element: <Explore/>
             },
+        ]
+    },
+    {
+        path: "/app/admin",
+        element: (
+            <ProtectedRoute>
+                <AdminLayout/>
+            </ProtectedRoute>
+        ),
+        errorElement: <ErrorElement/>,
+        children: [
+            {
+                path: "dashboard",
+                element: <Dashboard/>
+            }
         ]
     }
 ]);
