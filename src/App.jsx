@@ -17,6 +17,8 @@ import ProfileEdit from "./pages/app/ProfileEdit.jsx";
 import {AppContext} from "./Contexts.jsx";
 import {useEffect, useState} from "react";
 import {fetchAPI} from "./services/Fetch.js";
+import AdminLayout from "./layouts/AdminLayout.jsx";
+import Dashboard from "./pages/app/admin/Dashboard.jsx";
 
 const router = createBrowserRouter([
     {
@@ -81,6 +83,21 @@ const router = createBrowserRouter([
                 path: "/app/explore",
                 element: <Explore/>
             },
+        ]
+    },
+    {
+        path: "/app/admin",
+        element: (
+            <ProtectedRoute>
+                <AdminLayout/>
+            </ProtectedRoute>
+        ),
+        errorElement: <ErrorElement/>,
+        children: [
+            {
+                index: true,
+                element: <Dashboard/>
+            }
         ]
     }
 ]);

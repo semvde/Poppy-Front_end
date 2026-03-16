@@ -40,6 +40,10 @@ export default function ProtectedRoute({children}) {
     if (user.hasCompletedOnboarding && location.pathname === "/app/onboarding") {
         return <Navigate to="/app" replace/>;
     }
+    // Admin gedeelte
+    if (location.pathname.startsWith("/app/admin") && user.role !== "admin") {
+        return <Navigate to="/app" replace/>;
+    }
 
     return children;
 }
