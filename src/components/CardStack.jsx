@@ -14,7 +14,8 @@ function CardStack() {
 
         const {tracks} = await fetchAPI('/recommendations', 'POST', {
             'profileVector': vector,
-            'limit': 5
+            'limit': 5,
+            'dial': Number(localStorage.getItem('dial')) || 3
         })
 
         // console.log(tracks);
