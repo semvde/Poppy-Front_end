@@ -24,7 +24,7 @@ function Button({
     const variants = {
         primary: "bg-primary hover:bg-primary-hover focus:ring-outline disabled:bg-primary/40 disabled:text-text/40 disabled:cursor-not-allowed",
         secondary: "bg-secondary hover:bg-secondary-hover hover:text-body focus:ring-outline disabled:bg-secondary/40 disabled:text-text/40 disabled:cursor-not-allowed",
-        outline: "border border-outline hover:bg-primary/50 transition focus:outline-none focus:ring-1 focus:ring-offset-1"
+        outline: "border border-outline hover:bg-primary/50 transition focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:text-text/40"
     };
 
     //bepalen welke van de twee nodig is

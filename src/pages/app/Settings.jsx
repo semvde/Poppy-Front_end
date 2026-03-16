@@ -15,6 +15,19 @@ function Settings() {
     const [artistBlacklist, setArtistBlacklist] = useState([]);
     const [loadingBlacklist, setLoadingBlacklist] = useState(true);
 
+    const [form, setForm] = useState({
+        search: "",
+    });
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
     const getBlacklist = async () => {
         const {entries} = await fetchAPI('/blacklist');
 
@@ -34,19 +47,50 @@ function Settings() {
 
         if (!entries) return;
 
-        setGenreBlacklist(entries);
-        await getBlacklist();
+        setGenreBlacklist(entries.filter(e => e.type === "genre"));
+        setLoadingBlacklist(false);
     }
 
-    const removeEntryFromBlacklist = async (entryId) => {
+    const removeGenreFromBlacklist = async (entryId) => {
         setLoadingBlacklist(true);
 
         const {entries} = await fetchAPI(`/blacklist/${entryId}`, 'DELETE')
 
         if (!entries) return;
 
-        setGenreBlacklist(entries);
-        await getBlacklist();
+        setGenreBlacklist(entries.filter(e => e.type === "genre"));
+        setLoadingBlacklist(false);
+    }
+
+    const addArtistToBlacklist = async () => {
+        setLoadingBlacklist(true);
+
+        const artist = form.search;
+        setForm(prev => ({
+            ...prev,
+            ["search"]: ""
+        }));
+
+        const {entries} = await fetchAPI('/blacklist', 'POST', {
+            'type': 'artist',
+            'value': artist
+        });
+
+        if (!entries) return;
+
+        setArtistBlacklist(entries.filter(e => e.type === "artist"));
+        setLoadingBlacklist(false);
+    }
+
+    const removeArtistFromBlacklist = async (entryId) => {
+        setLoadingBlacklist(true);
+
+        const {entries} = await fetchAPI(`/blacklist/${entryId}`, 'DELETE')
+
+        if (!entries) return;
+
+        setArtistBlacklist(entries.filter(e => e.type === "artist"));
+        setLoadingBlacklist(false);
     }
 
     useEffect(() => {
@@ -71,11 +115,11 @@ function Settings() {
                 <div className={"flex flex-wrap gap-2.5"}>
                     {
                         genreBlacklist.length === 0 ? (
-                            <p className={"text-secondary"}>You haven't blacklisted any genres yet.</p>
+                            <p className={"text-secondary"}>You haven't blacklisted any genres.</p>
                         ) : (
                             genreBlacklist.map((genre) => (
                                 <Button key={genre._id} variant="secondary" size="sm" className={"capitalize"}
-                                        disabled={loadingBlacklist} onClick={() => removeEntryFromBlacklist(genre._id)}>
+                                        disabled={loadingBlacklist} onClick={() => removeGenreFromBlacklist(genre._id)}>
                                     {genre.value}
                                 </Button>
                             ))
@@ -115,11 +159,23 @@ function Settings() {
             <>
                 <span className={"text-base text-outline"}>Click on an artist to unblock them.</span>
                 <div className={"flex flex-wrap gap-2.5"}>
-                    <Button variant={"secondary"} size={"sm"}>Sorry guy</Button>
-                    <Button variant={"secondary"} size={"sm"}>Dream</Button>
-                    <Button variant={"secondary"} size={"sm"}>Taylor Slow</Button>
+                    {
+                        artistBlacklist.length === 0 ? (
+                            <p className={"text-secondary"}>You haven't blacklisted any artists.</p>
+                        ) : (
+                            artistBlacklist.map((artist) => (
+                                <Button key={artist._id} variant="secondary" size="sm" className={"capitalize"}
+                                        disabled={loadingBlacklist}
+                                        onClick={() => removeArtistFromBlacklist(artist._id)}>
+                                    {artist.value}
+                                </Button>
+                            ))
+                        )
+                    }
                 </div>
-                <FormField id={"search"} label={"Search an artist to add to blacklist"}/>
+                <FormField id={"search"} label={"Type a name to add to blacklist"} value={form.search}
+                           onChange={handleInputChange}/>
+                <Button onClick={() => addArtistToBlacklist()}>Block!</Button>
             </>
         )
     }
@@ -137,7 +193,7 @@ function Settings() {
                 <h2 className={"text-2xl!"}>Blacklist</h2>
                 <span className={"text-outline"}>Never want to hear a specific genre or artist ever again? Block them here!</span>
 
-                <div className={"space-y-5 mt-5"}>
+                <div className={"mt-5"}>
                     <div className={"grid grid-cols-2 border-b border-outline"}>
                         {tabs.map((tab) => (
                             <button key={tab.id}
@@ -146,7 +202,8 @@ function Settings() {
                         ))}
                     </div>
 
-                    <div className={"flex flex-col gap-5"}>{tabContent[activeTab]}</div>
+                    <div
+                        className={"flex flex-col gap-5 border-b border-secondary p-5"}>{tabContent[activeTab]}</div>
                 </div>
             </section>
 
