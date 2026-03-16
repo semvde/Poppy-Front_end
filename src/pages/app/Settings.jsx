@@ -93,6 +93,10 @@ function Settings() {
         setLoadingBlacklist(false);
     }
 
+    const setDial = (value) => {
+        localStorage.setItem('dial', value);
+    }
+
     useEffect(() => {
         getBlacklist();
     }, []);
@@ -211,8 +215,9 @@ function Settings() {
                 <h2 className={"text-2xl!"}>Preferences</h2>
                 <span className={"text-outline"}>Change how your algorithm recommends new music to you!</span>
                 <div className={"flex flex-col gap-5 mt-5"}>
-                    <Slider id={"familiar"} leftLabel={"Familiar"} rightLabel={"Adventurous"}/>
-                    <Slider id={"instrumental"} leftLabel={"Instrumental"} rightLabel={"Lyrical"}/>
+                    <Slider id={"dial"} leftLabel={"Familiar"} rightLabel={"Adventurous"}
+                            defaultValue={localStorage.getItem('dial')} step={1}
+                            min={1} max={5} onChange={(e) => setDial(e.target.value)}/>
                     <Toggle id={"ignore-activity"} label={"Don't train algorithm temporarily"}/>
                     <span className={"text-base text-outline -mt-6"}>Automatically disables in 00:00</span>
                 </div>
