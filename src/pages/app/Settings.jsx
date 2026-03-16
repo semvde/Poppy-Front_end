@@ -1,11 +1,57 @@
 import Button from "../../components/Button.jsx";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import FormField from "../../components/FormField.jsx";
 import Slider from "../../components/Slider.jsx";
 import Toggle from "../../components/Toggle.jsx";
+import {AppContext} from "../../Contexts.jsx";
+import {fetchAPI} from "../../services/Fetch.js";
 
 function Settings() {
+    const {genres} = useContext(AppContext);
+
     const [activeTab, setActiveTab] = useState("tab1");
+
+    const [genreBlacklist, setGenreBlacklist] = useState([]);
+    const [artistBlacklist, setArtistBlacklist] = useState([]);
+    const [loadingBlacklist, setLoadingBlacklist] = useState(true);
+
+    const getBlacklist = async () => {
+        const {entries} = await fetchAPI('/blacklist');
+
+        setGenreBlacklist(entries.filter(e => e.type === "genre"));
+        setArtistBlacklist(entries.filter(e => e.type === "artist"));
+
+        setLoadingBlacklist(false);
+    }
+
+    const addGenreToBlacklist = async (genre) => {
+        setLoadingBlacklist(true);
+
+        const {entries} = await fetchAPI('/blacklist', 'POST', {
+            'type': 'genre',
+            'value': genre
+        });
+
+        if (!entries) return;
+
+        setGenreBlacklist(entries);
+        await getBlacklist();
+    }
+
+    const removeEntryFromBlacklist = async (entryId) => {
+        setLoadingBlacklist(true);
+
+        const {entries} = await fetchAPI(`/blacklist/${entryId}`, 'DELETE')
+
+        if (!entries) return;
+
+        setGenreBlacklist(entries);
+        await getBlacklist();
+    }
+
+    useEffect(() => {
+        getBlacklist();
+    }, []);
 
     const tabs = [
         {
@@ -23,11 +69,46 @@ function Settings() {
             <>
                 <span className={"text-base text-outline"}>Click on a genre to unblock it.</span>
                 <div className={"flex flex-wrap gap-2.5"}>
-                    <Button variant={"secondary"} size={"sm"}>Classical</Button>
-                    <Button variant={"secondary"} size={"sm"}>Techno</Button>
-                    <Button variant={"secondary"} size={"sm"}>K-pop</Button>
+                    {
+                        genreBlacklist.length === 0 ? (
+                            <p className={"text-secondary"}>You haven't blacklisted any genres yet.</p>
+                        ) : (
+                            genreBlacklist.map((genre) => (
+                                <Button key={genre._id} variant="secondary" size="sm" className={"capitalize"}
+                                        disabled={loadingBlacklist} onClick={() => removeEntryFromBlacklist(genre._id)}>
+                                    {genre.value}
+                                </Button>
+                            ))
+                        )
+                    }
                 </div>
-                <FormField id={"search"} label={"Search a genre to add to blacklist"}/>
+                {
+                    genres
+                        .filter((genre) =>
+                            !genreBlacklist.some((b) => b.value === genre.name)
+                        ).length === 0 ? (
+                        <p>All genres are blocked...</p>
+                    ) : (
+                        <p>Select a genre to add to blacklist</p>
+                    )
+                }
+                <div className={"flex flex-wrap gap-2.5"}>
+                    {
+                        genres
+                            .filter((genre) =>
+                                !genreBlacklist.some((b) => b.value === genre.name)
+                            )
+                            .map((genre) => {
+                                return (
+                                    <Button key={genre.index} variant={"outline"} size={"sm"} className={"capitalize"}
+                                            disabled={loadingBlacklist} onClick={() => addGenreToBlacklist(genre.name)}
+                                    >
+                                        {genre.name}
+                                    </Button>
+                                );
+                            })
+                    }
+                </div>
             </>
         ),
         "tab2": (
