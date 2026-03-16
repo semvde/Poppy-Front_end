@@ -14,6 +14,9 @@ import Explore from "./pages/app/Explore.jsx";
 import Onboarding from "./pages/app/Onboarding.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ProfileEdit from "./pages/app/ProfileEdit.jsx";
+import {AppContext} from "./Contexts.jsx";
+import {useEffect, useState} from "react";
+import {fetchAPI} from "./services/Fetch.js";
 
 const router = createBrowserRouter([
     {
@@ -83,8 +86,29 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+    const [genres, setGenres] = useState([{index: -1, name: "Loading..."}]);
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [user, setUser] = useState(null);
+
+    const getGenres = async () => {
+        let {items} = await fetchAPI('/genres');
+
+        if (items === undefined) items = [{index: -1, name: "Loading..."}];
+
+        setGenres(items);
+        setSelectedGenres([]);
+    }
+
+    useEffect(() => {
+        if (user) {
+            getGenres();
+        }
+    }, [user]);
+
     return (
-        <RouterProvider router={router}/>
+        <AppContext value={{genres, selectedGenres, setSelectedGenres, user, setUser}}>
+            <RouterProvider router={router}/>
+        </AppContext>
     )
 }
 
