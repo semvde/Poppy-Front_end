@@ -92,7 +92,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement/>,
         children: [
             {
-                path: "dashboard",
+                index: true,
                 element: <Dashboard/>
             }
         ]
