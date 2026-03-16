@@ -1,7 +1,8 @@
 import Card from "./Card.jsx";
-import {useRef, useState, forwardRef, useEffect} from "react";
+import {useRef, useState, forwardRef, useEffect, useContext} from "react";
 import Button from "./Button.jsx";
 import Slider from "./Slider.jsx";
+import {AppContext} from "../Contexts.jsx";
 
 
 const MusicCard = forwardRef(
@@ -19,7 +20,6 @@ const MusicCard = forwardRef(
         let isDraggingCard = useRef(false);
 
         const [feedback, setFeedback] = useState("");
-        const [swipeStatus, setSwipeStatus] = useState(null);
 
 
         const audioRef = useRef(null);
@@ -28,7 +28,16 @@ const MusicCard = forwardRef(
         const [progress, setProgress] = useState(0);
         const [duration, setDuration] = useState(0);
 
+        //recommendations
         const [showRecom, setShowRecom] = useState(false);
+        const {genres} = useContext(AppContext);
+        // console.log(genres);
+
+        const topGenres = (song.genreVector ?? [])
+            .map((score, index) => ({score, index}))
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 2);
+
 
         //error
         const [audioError, setAudioError] = useState(null);
@@ -144,6 +153,8 @@ const MusicCard = forwardRef(
 
         function handlePointerUp() {
             isDraggingCard.current = false;
+            setShowRecom(false);
+
 
             //25% screen width
             const swipeThreshold = window.innerWidth * 0.25;
@@ -151,7 +162,7 @@ const MusicCard = forwardRef(
             if (distance.current > swipeThreshold) {
                 console.log("liked")
 
-                setSwipeStatus("liked");
+                // setSwipeStatus("liked");
                 //if onswipe isnt passed no error
                 onSwipe?.("right", song);
 
@@ -159,7 +170,7 @@ const MusicCard = forwardRef(
             } else if (distance.current < -swipeThreshold) {
                 console.log("disliked")
 
-                setSwipeStatus("disliked");
+                // setSwipeStatus("disliked");
                 onSwipe?.("left", song);
 
 
@@ -180,6 +191,7 @@ const MusicCard = forwardRef(
             setShowRecom(!showRecom);
         }
 
+
         return (
 
             <Card
@@ -194,13 +206,14 @@ const MusicCard = forwardRef(
                 aria-label={`Music card: ${song.title} by ${song.artist}`}
                 {...rest}>
 
-
-                <img
-                    src={song.albumImages?.[0]?.url ?? '/placeholder.jpg'}
-                    alt={`Album cover of ${song.title} from ${song.artist}`}
-                    draggable={false}
-                    className="object-cover w-64 h-64 mb-4 rounded-lg"
-                />
+                <div className={"flex justify-center"}>
+                    <img
+                        src={song.albumImages?.[0]?.url ?? '/placeholder.jpg'}
+                        alt={`Album cover of ${song.title} from ${song.artist}`}
+                        draggable={false}
+                        className="object-cover w-64 h-64 mb-4 rounded-lg"
+                    />
+                </div>
 
                 <div className="flex justify-between">
                     <div>
@@ -209,6 +222,9 @@ const MusicCard = forwardRef(
                     </div>
                     <Button
                         onClick={toggleRecom}
+                        aria-haspopup="dialog"
+                        aria-expanded={showRecom}
+                        aria-controls={`Recommendation-${song.id}`}
                         className="px-0! py-0! h-full bg-none! shadow-md shadow-primary"
                         aria-label={"Explanation of why this song is getting recommended"}>
 
@@ -220,8 +236,14 @@ const MusicCard = forwardRef(
 
                     {showRecom && (
                         <div
+                            role="dialog"
+                            aria-live="polite"
                             className="absolute bg-primary right-0 mt-6 mr-1 w-48 p-2 rounded shadow-lg">
-                            <p className="text-sm">{song.explanation}</p>
+                            <p className="text-sm">
+                                This song is recommended because it matches your preferred genres: {" "}
+                                {topGenres.map(g => `${genres[g.index]?.name} (${Math.round(g.score * 100)}%)`)
+                                    .join(" and ")}.
+                            </p>
                         </div>
                     )}
                 </div>
@@ -275,10 +297,10 @@ const MusicCard = forwardRef(
                 <div className="flex justify-between pt-2">
                     <Button size={"sm"} variant={"secondary"} className="text-2xl!"
                             onClick={() => onSwipe("left", song)}
-                            aria-label={"Dislike song"}>😔</Button>
+                            aria-label={`Dislike song ${song.title}`}>😔</Button>
                     <Button size={"sm"} variant={"secondary"} className="text-2xl!"
                             onClick={() => onSwipe("right", song)}
-                            aria-label={"Like song"}>❤️</Button>
+                            aria-label={`Like song ${song.title}`}>❤️</Button>
                 </div>
 
                 {feedback && (
