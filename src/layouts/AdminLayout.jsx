@@ -1,4 +1,5 @@
 import {useState} from "react";
+import Button from "../components/Button.jsx"
 import {NavLink, Outlet, useMatches, useNavigate} from "react-router";
 
 function AdminLayout() {
@@ -34,28 +35,27 @@ function AdminLayout() {
                             <NavLink to="/app/admin/users">Users</NavLink>
 
                             <div className="relative">
-                                <button type="button" onClick={() => setTopOpen(!topOpen)}
-                                        className="flex items-center gap-2">Top<i
+                                <Button onClick={() => setTopOpen(!topOpen)}>Top<i
                                     className="fa-solid fa-chevron-down text-xs"></i>
-                                </button>
+                                </Button>
 
                                 {topOpen && (
                                     <div
-                                        className="absolute top-full left-0 mt-2 bg-white text-black rounded-xl shadow-lg p-2 flex flex-col min-w-40">
+                                        className="absolute top-full left-0 mt-2 bg-outline text-black rounded-xl shadow-lg p-2 flex flex-col min-w-40">
                                         <NavLink to="/app/admin/top/songs"
-                                                 className="px-3 py-2 rounded hover:bg-gray-100"
+                                                 className="px-3 py-2 rounded hover:bg-primary-hover"
                                                  onClick={() => setTopOpen(false)}>
                                             Top songs
                                         </NavLink>
 
                                         <NavLink to="/app/admin/top/artists"
-                                                 className="px-3 py-2 rounded hover:bg-gray-100"
+                                                 className="px-3 py-2 rounded hover:bg-primary-hover"
                                                  onClick={() => setTopOpen(false)}>
                                             Top artists
                                         </NavLink>
 
                                         <NavLink to="/app/admin/top/genres"
-                                                 className="px-3 py-2 rounded hover:bg-gray-100"
+                                                 className="px-3 py-2 rounded hover:bg-primary-hover"
                                                  onClick={() => setTopOpen(false)}>
                                             Top genres
                                         </NavLink>
@@ -93,29 +93,28 @@ function AdminLayout() {
                             <NavLink to="/app/admin/users">Users</NavLink>
 
                             <div className="relative">
-                                <button type="button" onClick={() => setTopOpen(!topOpen)}
-                                        className="flex items-center gap-2">
+                                <Button as={"link"} onClick={() => setTopOpen(!topOpen)}>
                                     Top
                                     <i className="fa-solid fa-chevron-down text-xs"></i>
-                                </button>
+                                </Button>
 
                                 {topOpen && (
                                     <div
-                                        className="absolute top-full left-0 mt-2 bg-white text-black rounded-xl shadow-lg p-2 flex flex-col min-w-40">
+                                        className="absolute top-full left-0 mt-2 bg-outline text-black rounded-xl shadow-lg p-2 flex flex-col min-w-40">
                                         <NavLink to="/app/admin/top/songs"
-                                                 className="px-3 py-2 rounded hover:bg-gray-100"
+                                                 className="px-3 py-2 rounded hover:bg-primary-hover"
                                                  onClick={() => setTopOpen(false)}>
                                             Top songs
                                         </NavLink>
 
                                         <NavLink to="/app/admin/top/artists"
-                                                 className="px-3 py-2 rounded hover:bg-gray-100"
+                                                 className="px-3 py-2 rounded hover:bg-primary-hover"
                                                  onClick={() => setTopOpen(false)}>
                                             Top artists
                                         </NavLink>
 
                                         <NavLink to="/app/admin/top/genres"
-                                                 className="px-3 py-2 rounded hover:bg-gray-100"
+                                                 className="px-3 py-2 rounded hover:bg-primary-hover"
                                                  onClick={() => setTopOpen(false)}>
                                             Top genres
                                         </NavLink>
