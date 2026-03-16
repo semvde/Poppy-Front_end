@@ -1,24 +1,17 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {fetchAPI} from "../../services/Fetch.js";
 import Button from "../../components/Button.jsx";
 import {useNavigate} from "react-router";
+import {AppContext} from "../../Contexts.jsx";
 
 function Onboarding() {
-    const navigate = useNavigate();
+    const {genres, selectedGenres, setSelectedGenres} = useContext(AppContext);
 
-    const [genres, setGenres] = useState([{index: -1, name: "Loading..."}]);
-    const [selectedGenres, setSelectedGenres] = useState([]);
+    const navigate = useNavigate();
 
     const [errorMessage, setErrorMessage] = useState({
         error: ""
     });
-
-    const getGenres = async () => {
-        const {items} = await fetchAPI('/genres');
-
-        setGenres(items);
-        setSelectedGenres([]);
-    }
 
     const toggleGenre = (genre) => {
         setSelectedGenres((prev) => {
@@ -47,10 +40,6 @@ function Onboarding() {
 
         navigate('/app');
     }
-
-    useEffect(() => {
-        getGenres();
-    }, []);
 
     return (
         <>

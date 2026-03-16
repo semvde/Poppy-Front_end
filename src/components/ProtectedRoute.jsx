@@ -1,11 +1,12 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Navigate, useLocation} from "react-router";
 import {fetchAPI} from "../services/Fetch.js";
+import {AppContext} from "../Contexts.jsx";
 import AppLayout from "../layouts/AppLayout.jsx";
 
 export default function ProtectedRoute({children}) {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(null);
+    const {user, setUser} = useContext(AppContext);
     const location = useLocation();
 
     useEffect(() => {
