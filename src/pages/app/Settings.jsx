@@ -137,7 +137,7 @@ function Settings() {
                         ).length === 0 ? (
                         <p>All genres are blocked...</p>
                     ) : (
-                        <p>Select a genre to add to blacklist</p>
+                        <p>Select a genre to add to blacklist*</p>
                     )
                 }
                 <div className={"flex flex-wrap gap-2.5"}>
@@ -157,6 +157,8 @@ function Settings() {
                             })
                     }
                 </div>
+
+                <span className={"text-base text-outline"}>*Blocked genres can still appear via recommendations when they are subgenres.</span>
             </>
         ),
         "tab2": (
