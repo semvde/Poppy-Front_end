@@ -78,10 +78,13 @@ function Bubble() {
 
     return (
         <>
-            <section className={"py-10"}>
-                <div className={"text-center"}>
+            <section className={"py-5"}>
+                <div className={"flex flex-col items-center text-center"}>
                     <h1 className={"text-3xl!"}>Musical Bubble</h1>
                     <span className={"text-outline"}>Your musical taste visualised!</span>
+                    <div className={"max-w-[65ch]"}>
+                        <span className={"text-[12px] text-outline"}> Genres are rated with a multiplier between 0 and 2. The closer a genre is to 2, the more it fits your musical taste and the more the algorithm boosts it in your recommendations. Genres closer to 0 appear less prominently but can still show up.</span>
+                    </div>
                 </div>
             </section>
 
@@ -113,10 +116,9 @@ function Bubble() {
                                             className="absolute bg-primary right-0 mr-1 w-48 p-2 rounded shadow-lg"
                                         >
                                             <p className="text-sm">
-                                                You listen to <strong className={"capitalize"}>{item.name}</strong> a
-                                                lot. It
-                                                makes up{" "}
-                                                {Math.round(item.score * 100)}% of your recent listened songs.
+                                                You listen to <strong className="capitalize">{item.name}</strong> a lot,
+                                                and the algorithm boosts it by {item.score.toFixed(2)}x in your
+                                                recommendations.
                                             </p>
                                         </div>
                                     )}
@@ -160,9 +162,9 @@ function Bubble() {
                                                 className="absolute bg-primary right-0 mt-5 mr-1 w-48 p-2 rounded shadow-lg"
                                             >
                                                 <p className="text-sm">
-                                                    <strong className={"capitalize"}>{item.name}</strong> is a newer
-                                                    discovery and is starting to
-                                                    shape your taste ({Math.round(item.score * 100)}%).
+                                                    <strong className={"capitalize"}>{item.name}</strong> is a recent
+                                                    discovery that the algorithm boosts by {item.score.toFixed(2)}x in
+                                                    your recommendations.
                                                 </p>
                                             </div>
                                         )}
