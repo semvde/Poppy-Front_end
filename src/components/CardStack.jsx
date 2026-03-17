@@ -15,10 +15,13 @@ function CardStack() {
         const {tracks} = await fetchAPI('/recommendations', 'POST', {
             'profileVector': vector,
             'limit': 5,
-            'dial': Number(localStorage.getItem('dial')) || 3
+            'dial': Number(localStorage.getItem('dial')) || 3,
+            'filters': {
+                'unplayed': true
+            }
         })
 
-        // console.log(tracks);
+        console.log(tracks);
 
         setSongs(tracks);
     }
@@ -28,9 +31,9 @@ function CardStack() {
     function handleSwipe(direction, song, index) {
 
         if (direction === "right") {
-            setMessage(`❤️ Successfully liked ${song.title}`);
+            setMessage(`❤️ Liked ${song.title?.replace(/\s*\(feat\..*?\)/i, '')}`);
         } else {
-            setMessage(`😔 Successfully disliked ${song.title}`);
+            setMessage(`😔 Disliked ${song.title?.replace(/\s*\(feat\..*?\)/i, '')}`);
         }
 
         // Set the card as swiped by value to true
