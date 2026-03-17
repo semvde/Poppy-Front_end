@@ -3,6 +3,7 @@ import {useRef, useState, forwardRef, useEffect, useContext} from "react";
 import Button from "./Button.jsx";
 import Slider from "./Slider.jsx";
 import {AppContext} from "../Contexts.jsx";
+import {fetchAPI} from "../services/Fetch.js";
 
 
 const MusicCard = forwardRef(
@@ -27,6 +28,7 @@ const MusicCard = forwardRef(
         const [isPlaying, setIsPlaying] = useState(false);
         const [progress, setProgress] = useState(0);
         const [duration, setDuration] = useState(0);
+        const [hasPlayed, setHasPlayed] = useState(false);
 
         //recommendations
         const [showRecom, setShowRecom] = useState(false);
@@ -44,6 +46,18 @@ const MusicCard = forwardRef(
 
         const [isLoading, setIsLoading] = useState(true);
 
+        const postPlay = async () => {
+            const res = await fetchAPI(`/feedback/${song._id}/play`, 'POST');
+        }
+
+        const postFeedback = async (action) => {
+            const res = await fetchAPI('/feedback', 'POST', {
+                'trackId': song._id,
+                'action': action
+            })
+
+            console.log(res);
+        }
 
         // reset slider with new song
         useEffect(() => {
@@ -56,6 +70,7 @@ const MusicCard = forwardRef(
             setIsPlaying(false);
             setProgress(0);
             setDuration(0);
+            setHasPlayed(false);
         }, [song.url]);
 
         // update progress thumb
@@ -64,6 +79,14 @@ const MusicCard = forwardRef(
                 progressRef.current.value = progress;
             }
         }, [progress]);
+
+        useEffect(() => {
+            if (progress >= 3 && isPlaying && !hasPlayed) {
+                setHasPlayed(true);
+
+                postPlay();
+            }
+        }, [progress, hasPlayed]);
 
         async function togglePlay() {
             const audio = audioRef.current;
@@ -160,7 +183,7 @@ const MusicCard = forwardRef(
             const swipeThreshold = window.innerWidth * 0.25;
 
             if (distance.current > swipeThreshold) {
-                console.log("liked")
+                postFeedback('like')
 
                 // setSwipeStatus("liked");
                 //if onswipe isnt passed no error
@@ -168,7 +191,7 @@ const MusicCard = forwardRef(
 
 
             } else if (distance.current < -swipeThreshold) {
-                console.log("disliked")
+                postFeedback('dislike')
 
                 // setSwipeStatus("disliked");
                 onSwipe?.("left", song);
@@ -202,7 +225,7 @@ const MusicCard = forwardRef(
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
                 onPointerLeave={handlePointerUp}
-                className="rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
+                className="flex flex-col rounded-xl p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50 min-h-133.75"
                 aria-label={`Music card: ${song.title} by ${song.artist}`}
                 {...rest}>
 
@@ -217,7 +240,7 @@ const MusicCard = forwardRef(
 
                 <div className="flex justify-between">
                     <div>
-                        <h3>{song.title}</h3>
+                        <h3>{song.title?.replace(/\s*\(feat\..*?\)/i, '')}</h3>
                         <h4>{song.artist}</h4>
                     </div>
                     <Button
@@ -248,21 +271,23 @@ const MusicCard = forwardRef(
                     )}
                 </div>
 
-                {/*<audio*/}
-                {/*    ref={audioRef}*/}
-                {/*    src={song.url}*/}
-                {/*    onTimeUpdate={updateProgress}*/}
-                {/*    onLoadedMetadata={() => {*/}
-                {/*        loadDuration();*/}
-                {/*        setIsLoading(false)*/}
-                {/*    }}*/}
-                {/*    onError={() => {*/}
-                {/*        setAudioError("Can't load audio")*/}
-                {/*        setIsLoading(false);*/}
-                {/*    }}*/}
-                {/*/>*/}
+                {
+                    song.previewUrl !== undefined && <audio
+                        ref={audioRef}
+                        src={song.previewUrl}
+                        onTimeUpdate={updateProgress}
+                        onLoadedMetadata={() => {
+                            loadDuration();
+                            setIsLoading(false)
+                        }}
+                        onError={() => {
+                            setAudioError("Can't load audio")
+                            setIsLoading(false);
+                        }}
+                    />
+                }
 
-                {/*{isLoading && <p className="text-sm">Loading audio....</p>}*/}
+                {isLoading && song.previewUrl !== undefined && <p className="text-sm">Loading audio....</p>}
 
                 {duration > 0 && (
                     <Slider
@@ -283,18 +308,19 @@ const MusicCard = forwardRef(
                     </p>
                 )}
 
-                <div className="flex justify-center">
-                    <Button
-                        onClick={togglePlay}
-                        className="mt-2 w-full" variant={"secondary"}
-                        aria-label={isPlaying ? "Pause song" : "Play song"}
-                    >
-                        {isPlaying ? "⏸" : "▶"}
-                    </Button>
-                </div>
+                {
+                    song.previewUrl !== undefined && <div className="flex justify-center">
+                        <Button
+                            onClick={togglePlay}
+                            className="mt-2 w-full" variant={"secondary"}
+                            aria-label={isPlaying ? "Pause song" : "Play song"}
+                        >
+                            {isPlaying ? "⏸" : "▶"}
+                        </Button>
+                    </div>
+                }
 
-
-                <div className="flex justify-between pt-2">
+                <div className="flex justify-between pt-2 mt-auto">
                     <Button size={"sm"} variant={"secondary"} className="text-2xl!"
                             onClick={() => onSwipe("left", song)}
                             aria-label={`Dislike song ${song.title}`}>😔</Button>
