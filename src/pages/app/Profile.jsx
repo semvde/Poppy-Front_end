@@ -118,14 +118,7 @@ function Profile() {
                     <Button as={"link"} to={"/app/bubble"}><i className={"mr-2.5 fa-solid fa-chart-simple"}></i>Visualise</Button>
                 </div>
             </section>
-
-            <section className={"pb-10"}>
-                <div className={"flex flex-col gap-2.5"}>
-                    <h2 className={"text-2xl!"}>Friends</h2>
-                    <Button><i className={"mr-2.5 fa-solid fa-people-group"}></i>Friends list</Button>
-                    <Button><i className={"mr-2.5 fa-solid fa-user-plus"}></i>Friend requests</Button>
-                </div>
-            </section>
+            
         </>
     );
 }
