@@ -140,6 +140,8 @@ const MusicCard = forwardRef(
                 return;
             }
 
+            if (isLoading) return;
+
             isDraggingCard.current = true;
 
             //horizontal position of pointer
@@ -240,8 +242,8 @@ const MusicCard = forwardRef(
 
                 <div className="flex justify-between">
                     <div>
-                        <h3>{song.title?.replace(/\s*\(feat\..*?\)/i, '')}</h3>
-                        <h4>{song.artist}</h4>
+                        <h3>{song.title?.replace(/\s*\(feat\..*?\)/i, '') ?? 'Loading...'}</h3>
+                        <h4>{song.artist ?? 'This may take a while...'}</h4>
                     </div>
                     <Button
                         onClick={toggleRecom}

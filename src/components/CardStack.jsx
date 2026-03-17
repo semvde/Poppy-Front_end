@@ -21,6 +21,12 @@ function CardStack() {
             }
         })
 
+        for (const track of tracks) {
+            const {url} = await fetchAPI(`/tracks/${track.track._id}/preview`);
+
+            track.previewUrl = url;
+        }
+
         console.log(tracks);
 
         setSongs(tracks);
