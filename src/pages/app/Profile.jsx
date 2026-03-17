@@ -106,7 +106,8 @@ function Profile() {
                         {
                             bubbleItems.map((item) => {
                                 return (
-                                    <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
+                                    <div key={item.name}
+                                         className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
                                         <img src={`/genres/${item.name}.webp`} alt=""
                                              className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
                                         <span className={"col-start-3 col-end-8 capitalize"}>{item.name}</span>
@@ -118,7 +119,7 @@ function Profile() {
                     <Button as={"link"} to={"/app/bubble"}><i className={"mr-2.5 fa-solid fa-chart-simple"}></i>Visualise</Button>
                 </div>
             </section>
-            
+
         </>
     );
 }
