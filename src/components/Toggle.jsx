@@ -1,4 +1,4 @@
-function Toggle({id, label}) {
+function Toggle({id, label, checked, onChange}) {
     return (
         <div className="flex items-center justify-between gap-2.5 py-1">
             <label htmlFor={id}>{label}</label>
@@ -8,6 +8,8 @@ function Toggle({id, label}) {
                     type="checkbox"
                     id={id}
                     className="sr-only peer"
+                    checked={checked}
+                    onChange={onChange}
                 />
 
                 <div className="w-11 h-6 bg-outline rounded-full
