@@ -8,20 +8,20 @@ function Button({
                     disabled = false,
                     as = "button",
                     to,
+                    unstyled = false,
                     "aria-label": ariaLabel,
                     ...props
                 }) {
-    const baseStyling =
-        "inline-flex w-auto items-center text-text justify-center rounded-3xl cursor-pointer";
+    const baseStyling = unstyled ? "cursor-pointer" : "inline-flex w-auto items-center text-text justify-center rounded-3xl cursor-pointer";
 
 
-    const sizes = {
+    const sizes = unstyled ? {} : {
         sm: "px-6 py-2 text-sm",
         md: "px-8 py-2.5 text-base",
         lg: "px-10 py-3 text-lg"
     };
 
-    const variants = {
+    const variants = unstyled ? {} : {
         primary: "bg-primary hover:bg-primary-hover focus:ring-outline disabled:bg-primary/40 disabled:text-text/40 disabled:cursor-not-allowed",
         secondary: "bg-secondary hover:bg-secondary-hover hover:text-body focus:ring-outline disabled:bg-secondary/40 disabled:text-text/40 disabled:cursor-not-allowed",
         outline: "border border-outline hover:bg-primary/50 transition focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:text-text/40"

@@ -1,10 +1,14 @@
 import {fetchAPI} from "../../services/Fetch.js";
 import {useEffect, useState} from "react";
+import Button from "../../components/Button.jsx";
+import {Link} from "react-router";
 
 function Bubble() {
 
     const [bubbleItems, setBubbleItems] = useState([]);
     const [bubbleNewItems, setBubbleNewItems] = useState([]);
+
+    const [activeItem, setActiveItem] = useState(null);
 
     const getGenres = async () => {
         try {
@@ -30,9 +34,17 @@ function Bubble() {
         }
     }
 
+    function toggleRecom(e, name) {
+        //stops the slide from opening the recommendation button
+        e.stopPropagation();
+
+        setActiveItem(prev => prev === name ? null : name);
+    }
+
     useEffect(() => {
         getGenres();
     }, []);
+
 
     // const bubbleItems = [
     //     {
@@ -77,17 +89,38 @@ function Bubble() {
                 <div className={"flex justify-center"}>
                     {/*Big Bubble with music genres*/}
                     <div
-                        className={"relative text-2xl border border-secondary rounded-full aspect-square w-full max-w-100 m-10"}>
+                        className={"relative text-2xl border border-secondary rounded-full aspect-square w-full max-w-100 m-10 z-1"}>
                         {bubbleItems.map((item, i) => {
                             const angle = (360 / bubbleItems.length) * i;
 
                             const radius = (screen.width < 640) ? screen.width / 2 - 40 - 20 : 200;
 
                             return (
-                                <div key={i} className={"absolute top-1/2 left-1/2 bg-body capitalize p-1"} style={{
+                                <div key={i} className={"absolute top-1/2 left-1/2 bg-body p-1"} style={{
                                     transform: `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg) translate(-50%, -50%)`
                                 }}>
-                                    {item.name}
+                                    <Button
+                                        unstyled
+                                        className={"capitalize"}
+                                        onClick={(e) => toggleRecom(e, item.name)}>
+                                        {item.name}
+                                    </Button>
+
+                                    {activeItem === item.name && (
+                                        <div
+                                            role="dialog"
+                                            aria-live="polite"
+                                            className="absolute bg-primary right-0 mr-1 w-48 p-2 rounded shadow-lg"
+                                        >
+                                            <p className="text-sm">
+                                                You listen to <strong className={"capitalize"}>{item.name}</strong> a
+                                                lot. It
+                                                makes up{" "}
+                                                {Math.round(item.score * 100)}% of your recent listened songs.
+                                            </p>
+                                        </div>
+                                    )}
+
                                 </div>
                             );
                         })}
@@ -109,15 +142,40 @@ function Bubble() {
 
                             return (
                                 <div key={i}
-                                     className={"absolute top-1/2 left-1/2 flex items-center bg-body aspect-square border border-secondary rounded-full capitalize p-2"}
+                                     className={"absolute top-1/2 left-1/2 flex items-center bg-body aspect-square border border-secondary rounded-full p-2"}
                                      style={{
                                          transform: `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg) translate(-50%, -50%)`
                                      }}>
-                                    {item.name}
+                                    <Button
+                                        unstyled
+                                        className={"capitalize"}
+                                        onClick={(e) => toggleRecom(e, item.name)}>
+                                        {item.name}
+                                    </Button>
+                                    <div>
+                                        {activeItem === item.name && (
+                                            <div
+                                                role="dialog"
+                                                aria-live="polite"
+                                                className="absolute bg-primary right-0 mt-5 mr-1 w-48 p-2 rounded shadow-lg"
+                                            >
+                                                <p className="text-sm">
+                                                    <strong className={"capitalize"}>{item.name}</strong> is a newer
+                                                    discovery and is starting to
+                                                    shape your taste ({Math.round(item.score * 100)}%).
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
+
                             );
                         })}
+
+
                     </div>
+
+
                 </div>
             </section>
         </>
