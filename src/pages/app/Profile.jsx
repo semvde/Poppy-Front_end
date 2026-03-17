@@ -8,6 +8,8 @@ function Profile() {
     const [user, setUser] = useState({});
     let image = '/placeholder.jpg';
 
+    const [bubbleItems, setBubbleItems] = useState([]);
+
     const getGenres = async () => {
         const res = await fetchAPI('/auth/me');
 
@@ -19,6 +21,33 @@ function Profile() {
     useEffect(() => {
         getGenres();
     }, []);
+
+    const getGenreInfo = async () => {
+        try {
+            const data = await fetchAPI('/sliders', 'GET');
+
+            console.log(data);
+
+            const sliders = data.sliders;
+
+            const sortedGenres = Object.entries(sliders)
+                .map(([name, score]) => ({name, score}))
+                .sort((a, b) => b.score - a.score);
+
+            const topGenres = sortedGenres.slice(0, 2);
+
+            setBubbleItems(topGenres);
+
+
+        } catch (error) {
+            console.error("Error fetching genres:", error);
+        }
+    }
+
+    useEffect(() => {
+        getGenreInfo();
+    }, []);
+
 
     return (
         <>
@@ -46,35 +75,18 @@ function Profile() {
                         <span className={"text-sm text-outline"}>Genres you listened to the most!</span>
                     </div>
                     <div className={"grid grid-cols-2 gap-2.5"}>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Genre Title</span>
-                        </div>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Genre Title</span>
-                        </div>
+                        {
+                            bubbleItems.map((item) => {
+                                return (
+                                    <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
+                                        <img src={`/genres/${item.name}.webp`} alt=""
+                                             className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
+                                        <span className={"col-start-3 col-end-8 capitalize"}>{item.name}</span>
+                                    </div>
+                                );
+                            })
+                        }
                     </div>
-
-                    <div>
-                        <h3 className={"text-xl!"}>Top artists</h3>
-                        <span className={"text-sm text-outline"}>Artists you listened to the most!</span>
-                    </div>
-                    <div className={"grid grid-cols-2 gap-2.5"}>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Artist Name</span>
-                        </div>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Artist Name</span>
-                        </div>
-                    </div>
-
                     <Button as={"link"} to={"/app/bubble"}><i className={"mr-2.5 fa-solid fa-chart-simple"}></i>Visualise</Button>
                 </div>
             </section>

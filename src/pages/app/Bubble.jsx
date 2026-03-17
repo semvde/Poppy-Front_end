@@ -10,7 +10,7 @@ function Bubble() {
 
     const [activeItem, setActiveItem] = useState(null);
 
-    const getGenres = async () => {
+    const getGenreInfo = async () => {
         try {
             const data = await fetchAPI('/sliders', 'GET');
 
@@ -42,7 +42,7 @@ function Bubble() {
     }
 
     useEffect(() => {
-        getGenres();
+        getGenreInfo();
     }, []);
 
 
