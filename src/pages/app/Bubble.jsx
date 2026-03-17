@@ -104,7 +104,7 @@ function Bubble() {
                 <div className={"flex justify-center"}>
                     {/*Smaller bubble with newly discovered genres*/}
                     <div
-                        className={"animate-pulse relative aspect-square w-full max-w-100 m-10"}>
+                        className={"animate-pulse motion-reduce:animate-none relative aspect-square w-full max-w-100 m-10"}>
                         {bubbleNewItems.map((item, i) => {
                             const startAngle = 135;
                             const endAngle = 45;
