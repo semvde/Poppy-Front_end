@@ -3,10 +3,17 @@ import {Link} from "react-router";
 import Card from "../../components/Card.jsx";
 import {useEffect, useState} from "react";
 import {fetchAPI} from "../../services/Fetch.js";
+import Toggle from "../../components/Toggle.jsx";
+import {useNavigate, useLocation} from "react-router";
 
 function Profile() {
     const [user, setUser] = useState({});
     let image = '/placeholder.jpg';
+
+    // Admin Toggle
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isAdmin = location.pathname.startsWith("/app/admin");
 
     const getGenres = async () => {
         const res = await fetchAPI('/auth/me');
@@ -20,6 +27,17 @@ function Profile() {
         getGenres();
     }, []);
 
+    // Admin Toggle
+    const handleToggleChange = (e) => {
+        const newValue = e.target.checked;
+
+        if (newValue) {
+            navigate("/app/admin/profile");
+        } else {
+            navigate("/app/profile");
+        }
+    };
+
     return (
         <>
             <section className={"py-10"}>
@@ -32,6 +50,16 @@ function Profile() {
                             <Button variant={"outline"} size={"sm"} as={"link"} to={"/app/profile/edit"}>Edit
                                 Profile</Button>
                             <Button size={"sm"} as={"link"} to={"/app/settings"}>Settings</Button>
+                            
+                            {/*Admin Toggle*/}
+                            {user.role === "admin" && (
+                                <div
+                                    className="col-span-2 flex items-center justify-between rounded-xl bg-secondary px-4 py-3">
+                                    <span>Admin dashboard</span>
+                                    <Toggle checked={isAdmin} onChange={handleToggleChange}/>
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>

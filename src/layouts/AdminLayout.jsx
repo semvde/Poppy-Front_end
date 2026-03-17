@@ -31,7 +31,7 @@ function AdminLayout() {
                         <div className="flex items-center gap-20">
                             <img src="/logo.png" alt="" className="h-10"/>
 
-                            <NavLink to="/app/admin/dashboard">Dashboard</NavLink>
+                            <NavLink to="/app/admin">Dashboard</NavLink>
                             <NavLink to="/app/admin/users">Users</NavLink>
 
                             <div className="relative">
@@ -65,7 +65,7 @@ function AdminLayout() {
                         </div>
 
                         <div className="flex items-center gap-10">
-                            <NavLink to="/app/profile">Profile</NavLink>
+                            <NavLink to="/app/admin/profile">Profile</NavLink>
 
                             <NavLink to="/app/admin/settings" className="flex items-center" aria-label="Settings">
                                 <i className="text-2xl fa-solid fa-gear"></i>
@@ -89,7 +89,7 @@ function AdminLayout() {
                         <div className="flex items-center gap-20">
                             <img src="/logo.png" alt="" className="h-10"/>
 
-                            <NavLink to="/app/admin/dashboard">Dashboard</NavLink>
+                            <NavLink to="/app/admin">Dashboard</NavLink>
                             <NavLink to="/app/admin/users">Users</NavLink>
 
                             <div className="relative">
@@ -124,7 +124,7 @@ function AdminLayout() {
                         </div>
 
                         <div className="flex items-center gap-10">
-                            <NavLink to="/app/profile">Profile</NavLink>
+                            <NavLink to="/app/admin/profile">Profile</NavLink>
 
                             <NavLink to="/app/admin/settings" className="flex items-center" aria-label="Settings">
                                 <i className="text-2xl fa-solid fa-gear"></i>
@@ -141,7 +141,7 @@ function AdminLayout() {
             <footer className="fixed left-0 right-0 bottom-0 bg-black rounded-t-xl px-3 py-3 sm:static z-999">
                 {/* Mobile version */}
                 <nav className="flex items-center justify-between text-4xl max-w-300 mx-auto sm:hidden">
-                    <NavLink to="/app/admin/dashboard" className="flex items-center" aria-label="Dashboard">
+                    <NavLink to="/app/admin" className="flex items-center" aria-label="Dashboard">
                         <i className="fa-solid fa-chart-line"></i>
                     </NavLink>
 
@@ -153,7 +153,7 @@ function AdminLayout() {
                         <i className="fa-solid fa-trophy"></i>
                     </NavLink>
 
-                    <NavLink to="/app/profile" className="flex items-center" aria-label="Profile">
+                    <NavLink to="/app/admin/profile" className="flex items-center" aria-label="Profile">
                         <i className="fa-regular fa-user"></i>
                     </NavLink>
                 </nav>
