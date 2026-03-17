@@ -1,7 +1,6 @@
 import {fetchAPI} from "../../services/Fetch.js";
 import {useEffect, useState} from "react";
 import Button from "../../components/Button.jsx";
-import {Link} from "react-router";
 
 function Bubble() {
 
@@ -46,38 +45,8 @@ function Bubble() {
     }, []);
 
 
-    // const bubbleItems = [
-    //     {
-    //         "name": "EDM",
-    //         "listen_duration": 30
-    //     },
-    //     {
-    //         "name": "House",
-    //         "listen_duration": 25
-    //     },
-    //     {
-    //         "name": "Pop",
-    //         "listen_duration": 20
-    //     }
-    // ];
-    //
-    // const bubbleNewItems = [
-    //     {
-    //         "name": "Rap",
-    //         "listen_duration": 10
-    //     },
-    //     {
-    //         "name": "Trance",
-    //         "listen_duration": 5
-    //     },
-    //     {
-    //         "name": "DnB",
-    //         "listen_duration": 2
-    //     }
-    // ];
-
     return (
-        <>
+        <div className={"overflow-x-hidden sm:overflow-x-visible"}>
             <section className={"py-5"}>
                 <div className={"flex flex-col items-center text-center"}>
                     <h1 className={"text-3xl!"}>Musical Bubble</h1>
@@ -89,10 +58,10 @@ function Bubble() {
             </section>
 
             <section className={"pb-10"}>
-                <div className={"flex justify-center"}>
+                <div className={"flex justify-center overflow-visible"}>
                     {/*Big Bubble with music genres*/}
                     <div
-                        className={"relative text-2xl border border-secondary rounded-full aspect-square w-full max-w-100 m-10 z-1"}>
+                        className={"relative overflow-visible text-2xl border border-secondary rounded-full aspect-square w-full max-w-100 m-10 z-1"}>
                         {bubbleItems.map((item, i) => {
                             const angle = (360 / bubbleItems.length) * i;
 
@@ -113,7 +82,8 @@ function Bubble() {
                                         <div
                                             role="dialog"
                                             aria-live="polite"
-                                            className="absolute bg-primary right-0 mr-1 w-48 p-2 rounded shadow-lg"
+                                            className="absolute bg-primary right-0 mr-1 w-30 p-2 rounded shadow-lg break-words
+                                            sm:w-48 sm:left-auto sm:translate-x-0 sm:right-0"
                                         >
                                             <p className="text-sm">
                                                 You listen to <strong className="capitalize">{item.name}</strong> a lot,
@@ -159,7 +129,8 @@ function Bubble() {
                                             <div
                                                 role="dialog"
                                                 aria-live="polite"
-                                                className="absolute bg-primary right-0 mt-5 mr-1 w-48 p-2 rounded shadow-lg"
+                                                className="absolute bg-primary right-0 mt-3 mr-1 w-25 p-2 rounded shadow-lg break-words
+                                                sm:w-48 sm:left-auto sm:translate-x-0 sm:right-0"
                                             >
                                                 <p className="text-sm">
                                                     <strong className={"capitalize"}>{item.name}</strong> is a recent
@@ -180,7 +151,7 @@ function Bubble() {
 
                 </div>
             </section>
-        </>
+        </div>
     );
 }
 
