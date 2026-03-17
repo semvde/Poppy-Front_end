@@ -26,7 +26,8 @@ function AppLayout() {
                             <img src="/logo.png" alt="" className={"h-10"}/>
                             <NavLink to={"/app"}>Home</NavLink>
                             <NavLink to={"/app/explore"}>Explore</NavLink>
-                            <NavLink to={"/app/playlists"}>Playlists</NavLink>
+                            <NavLink to={"/app/friends"}>Friend Space</NavLink>
+
                         </div>
                         <div className={"flex items-center gap-10"}>
                             <NavLink to={"/app/profile"}>Profile</NavLink>
@@ -49,7 +50,8 @@ function AppLayout() {
                             <img src="/logo.png" alt="" className={"h-10"}/>
                             <NavLink to={"/app"}>Home</NavLink>
                             <NavLink to={"/app/explore"}>Explore</NavLink>
-                            <NavLink to={"/app/playlists"}>Playlists</NavLink>
+                            <NavLink to={"/app/friends"}>Friend Space</NavLink>
+
                         </div>
                         <div className={"flex items-center gap-10"}>
                             <NavLink to={"/app/profile"}>Profile</NavLink>
@@ -71,8 +73,8 @@ function AppLayout() {
                         className="fa-solid fa-layer-group"></i></NavLink>
                     <NavLink to={"/app/explore"} className={"flex items-center"} aria-label={"Explore"}><i
                         className="fa-regular fa-compass"></i></NavLink>
-                    <NavLink to={"/app/playlists"} className={"flex items-center"} aria-label={"Playlists"}><i
-                        className="fa-solid fa-folder-open"></i></NavLink>
+                    <NavLink to={"/app/friends"} className={"flex items-center"} aria-label={"Friend Space"}><i
+                        className="fa-solid fa-people-group"></i></NavLink>
                     <NavLink to={"/app/profile"} className={"flex items-center"} aria-label={"Profile"}><i
                         className="fa-regular fa-user"></i></NavLink>
                 </nav>

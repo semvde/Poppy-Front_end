@@ -77,12 +77,13 @@ const router = createBrowserRouter([
             {
                 path: "/app/friends",
                 element: <Friends/>,
-                handle: {page: "subpage"}
+               
             },
             {
                 path: "/app/explore",
                 element: <Explore/>
             },
+
         ]
     },
     {
