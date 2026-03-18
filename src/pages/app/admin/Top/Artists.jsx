@@ -82,7 +82,7 @@ function Artists() {
 
             <section>
                 <h1 className="text-xl! flex justify-center p-5">Visual</h1>
-                <Card className="p-5">
+                <Card className="p-5 flex justify-center">
                     <Doughnut data={chartData} options={chartOptions}/>
                 </Card>
             </section>
