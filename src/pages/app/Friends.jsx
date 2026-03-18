@@ -4,28 +4,8 @@ import {useEffect, useState} from "react";
 
 function Friends() {
 
-    const [friends, setFriends] = useState([
-        {
-            "id": "user123",
-            "username": "john_doe",
-            "email": "john@example.com",
-            "image": "https://...",
-            "friendshipId": "9812364054123",
-            "since": "2026-03-10T12:00:00.000Z",
-            "status": "accepted"
-
-        },
-        {
-            "id": "user1234",
-            "username": "jane_doe",
-            "email": "jane@example.com",
-            "image": "https://...",
-            "friendshipId": "9812364054123",
-            "since": "2026-03-10T12:00:00.000Z",
-            "status": "accepted"
-
-        }
-    ])
+    const [friends, setFriends] = useState([]);
+    const [query, setQuery] = useState("");
 
     const getFriendList = async () => {
         try {
@@ -43,6 +23,42 @@ function Friends() {
         }
     }
 
+    const searchFriends = async (q) => {
+        if (q.length < 2) return;
+
+
+        if (!q) return setFriends([]);
+
+        try {
+            const data = await fetchAPI(`/friends/search?q=${encodeURIComponent(q)}`, 'GET');
+
+            console.log(data);
+            const friends = data.data || [];
+
+
+            setFriends(friends);
+
+
+        } catch (error) {
+            console.error("Error searching friends:", error);
+        }
+    }
+
+    const deleteFriend = async (friendId) => {
+        try {
+            const data = await fetchAPI('/friends/{friendId}', 'DELETE');
+
+            console.log(data);
+
+            setFriends((prev) => prev.filter((f) => f.id !== friendId));
+
+
+        } catch (error) {
+            console.error("Error deleting friend:", error);
+        }
+    }
+
+
     useEffect(() => {
         // getFriendList();
     }, []);
@@ -58,11 +74,15 @@ function Friends() {
 
                     <input
                         type="text"
+                        value={query}
+                        onChange={(e) => {
+                            setQuery(e.target.value);
+                            searchFriends(e.target.value);
+                        }}
                         placeholder="Search friends..."
                         className="w-full bg-transparent outline-none"
                     />
                 </div>
-
             </section>
 
             <div className="flex flex-wrap gap-2.5 p-5 justify-center text-center">
@@ -86,14 +106,17 @@ function Friends() {
             </div>
 
             <section className={"grid grid-cols-1 gap-2.5"}>
+                {friends.length === 0 && <p>No friends found</p>}
                 {friends.filter((friend) => friend.status === "accepted").map((friend) => (
                     <Button key={friend.id} as={"link"}>
                         <div className="flex items-center justify-between w-full">
 
                             <span className="font-medium">{friend.username}</span>
 
-                            <Button className={"px-2!"}>
-                                <i className="fa-solid fa-ellipsis-vertical"></i>
+                            <Button className={"px-2!"}
+                                    onClick={() => deleteFriend(friend.id)}>
+                                {/*<i className="fa-solid fa-ellipsis-vertical"></i>*/}
+                                Delete
                             </Button>
 
                         </div>

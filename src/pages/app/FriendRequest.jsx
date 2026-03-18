@@ -4,34 +4,11 @@ import {useEffect, useState} from "react";
 
 function FriendRequest() {
 
-    const [friendRequests, setFriendsRequest] = useState({
-        incoming: [
-            {
-                id: "req1",
-                sender: {
-                    id: "user1",
-                    username: "john_doe",
-                    email: "john@example.com",
-                    image: null
-                },
-                status: "pending",
-                createdAt: "2026-03-17T09:48:11.293Z"
-            }
-        ],
-        outgoing: [
-            {
-                id: "req2",
-                receiver: {
-                    id: "user2",
-                    username: "jane_doe",
-                    email: "jane@example.com",
-                    image: null
-                },
-                status: "pending",
-                createdAt: "2026-03-17T10:15:22.123Z"
-            }
-        ]
-    })
+
+    const [friendRequests, setFriendsRequest] = useState({incoming: [], outgoing: []});
+    const [searchResults, setSearchResults] = useState([]);
+    const [query, setQuery] = useState("");
+
 
     const getFriendRequest = async () => {
         try {
@@ -50,20 +27,56 @@ function FriendRequest() {
         }
     }
 
-    const statusFriendRequest = async () => {
+    const searchUsers = async (username) => {
+        if (!username) return setSearchResults([]);
         try {
-            const data = await fetchAPI('/friends/{requestId}', 'PATCH');
+            const data = await fetchAPI(`/friends/search?q=${encodeURIComponent(username)}`, "GET");
+            setSearchResults(data.data);
+        } catch (error) {
+            console.error("Error searching users:", error);
+        }
+    };
+
+
+    const sendFriendRequest = async (receiverId) => {
+        try {
+            const data = await fetchAPI('/friends/request', 'POST', {receiverId});
 
             console.log(data);
 
+            setFriendsRequest(prev => ({
+                ...prev,
+                outgoing: [data.data, ...prev.outgoing]
+            }));
+
+            setSearchResults(prev => prev.filter(u => u.id !== receiverId));
+
 
         } catch (error) {
-            console.error("Error fetching friend requests:", error);
+            console.error("Error sending friend request:", error);
         }
     }
 
+    const statusFriendRequest = async (requestId, newStatus) => {
+        try {
+            await fetchAPI('/friends/{requestId}', 'PATCH', {
+                status: newStatus
+            });
+
+
+            console.log(newStatus);
+
+            getFriendRequest();
+
+
+        } catch (error) {
+            console.error("Error updating friend requests:", error);
+        }
+    }
+
+
     useEffect(() => {
-        // getFriendRequest()
+        getFriendRequest()
     }, []);
 
 
@@ -81,8 +94,25 @@ function FriendRequest() {
                         type="text"
                         placeholder="Search friends..."
                         className="w-full bg-transparent outline-none"
+                        value={query}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setQuery(val);
+                            searchUsers(val);
+                        }}
                     />
                 </div>
+
+                {searchResults.length > 0 && (
+                    <div className="grid grid-cols-1 gap-2.5 mt-2">
+                        {searchResults.map(user => (
+                            <div key={user.id} className="flex justify-between items-center p-2 bg-body rounded-lg">
+                                <span>{user.username}</span>
+                                <Button onClick={() => sendFriendRequest(user.id)}>Add Friend</Button>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
             </section>
 
@@ -101,15 +131,15 @@ function FriendRequest() {
 
                             <span className="font-medium">{request.sender.username}</span>
 
-                            <Button className={"px-2!"}>
+                            <Button onClick={() => statusFriendRequest(request.id, "accepted")} className={"px-2!"}>
                                 {/*<i className="fa-solid fa-ellipsis-vertical"></i>*/}
                                 Accept
                             </Button>
-                            <Button className={"px-2!"}>
+                            <Button onClick={() => statusFriendRequest(request.id, "rejected")} className={"px-2!"}>
                                 {/*<i className="fa-solid fa-ellipsis-vertical"></i>*/}
                                 Decline
                             </Button>
-                            <Button className={"px-2!"}>
+                            <Button onClick={() => statusFriendRequest(request.id, "blocked")} className={"px-2!"}>
                                 {/*<i className="fa-solid fa-ellipsis-vertical"></i>*/}
                                 Block
                             </Button>
