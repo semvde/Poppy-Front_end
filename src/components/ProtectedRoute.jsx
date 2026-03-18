@@ -1,11 +1,12 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Navigate, useLocation} from "react-router";
 import {fetchAPI} from "../services/Fetch.js";
+import {AppContext} from "../Contexts.jsx";
 import AppLayout from "../layouts/AppLayout.jsx";
 
 export default function ProtectedRoute({children}) {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(null);
+    const {user, setUser} = useContext(AppContext);
     const location = useLocation();
 
     useEffect(() => {
@@ -37,6 +38,10 @@ export default function ProtectedRoute({children}) {
     }
 
     if (user.hasCompletedOnboarding && location.pathname === "/app/onboarding") {
+        return <Navigate to="/app" replace/>;
+    }
+    // Admin gedeelte
+    if (location.pathname.startsWith("/app/admin") && user.role !== "admin") {
         return <Navigate to="/app" replace/>;
     }
 

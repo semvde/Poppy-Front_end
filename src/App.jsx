@@ -14,6 +14,11 @@ import Explore from "./pages/app/Explore.jsx";
 import Onboarding from "./pages/app/Onboarding.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ProfileEdit from "./pages/app/ProfileEdit.jsx";
+import {AppContext} from "./Contexts.jsx";
+import {useEffect, useState} from "react";
+import {fetchAPI} from "./services/Fetch.js";
+import AdminLayout from "./layouts/AdminLayout.jsx";
+import Dashboard from "./pages/app/admin/Dashboard.jsx";
 
 const router = createBrowserRouter([
     {
@@ -72,19 +77,60 @@ const router = createBrowserRouter([
             {
                 path: "/app/friends",
                 element: <Friends/>,
-                handle: {page: "subpage"}
+               
             },
             {
                 path: "/app/explore",
                 element: <Explore/>
             },
+
+        ]
+    },
+    {
+        path: "/app/admin",
+        element: (
+            <ProtectedRoute>
+                <AdminLayout/>
+            </ProtectedRoute>
+        ),
+        errorElement: <ErrorElement/>,
+        children: [
+            {
+                index: true,
+                element: <Dashboard/>
+            },
+            {
+                path: "profile",
+                element: <Profile/>
+            }
         ]
     }
 ]);
 
 function App() {
+    const [genres, setGenres] = useState([{index: -1, name: "Loading..."}]);
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [user, setUser] = useState(null);
+
+    const getGenres = async () => {
+        let {items} = await fetchAPI('/genres');
+
+        if (items === undefined) items = [{index: -1, name: "Loading..."}];
+
+        setGenres(items);
+        setSelectedGenres([]);
+    }
+
+    useEffect(() => {
+        if (user) {
+            getGenres();
+        }
+    }, [user]);
+
     return (
-        <RouterProvider router={router}/>
+        <AppContext value={{genres, selectedGenres, setSelectedGenres, user, setUser}}>
+            <RouterProvider router={router}/>
+        </AppContext>
     )
 }
 

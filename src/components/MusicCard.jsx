@@ -1,7 +1,9 @@
 import Card from "./Card.jsx";
-import {useRef, useState, forwardRef, useEffect} from "react";
+import {useRef, useState, forwardRef, useEffect, useContext} from "react";
 import Button from "./Button.jsx";
 import Slider from "./Slider.jsx";
+import {AppContext} from "../Contexts.jsx";
+import {fetchAPI} from "../services/Fetch.js";
 
 
 const MusicCard = forwardRef(
@@ -19,7 +21,6 @@ const MusicCard = forwardRef(
         let isDraggingCard = useRef(false);
 
         const [feedback, setFeedback] = useState("");
-        const [swipeStatus, setSwipeStatus] = useState(null);
 
 
         const audioRef = useRef(null);
@@ -27,14 +28,36 @@ const MusicCard = forwardRef(
         const [isPlaying, setIsPlaying] = useState(false);
         const [progress, setProgress] = useState(0);
         const [duration, setDuration] = useState(0);
+        const [hasPlayed, setHasPlayed] = useState(false);
 
+        //recommendations
         const [showRecom, setShowRecom] = useState(false);
+        const {genres} = useContext(AppContext);
+        // console.log(genres);
+
+        const topGenres = (song.genreVector ?? [])
+            .map((score, index) => ({score, index}))
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 2);
+
 
         //error
         const [audioError, setAudioError] = useState(null);
 
         const [isLoading, setIsLoading] = useState(true);
 
+        const postPlay = async () => {
+            const res = await fetchAPI(`/feedback/${song._id}/play`, 'POST');
+        }
+
+        const postFeedback = async (action) => {
+            const res = await fetchAPI('/feedback', 'POST', {
+                'trackId': song._id,
+                'action': action
+            })
+
+            console.log(res);
+        }
 
         // reset slider with new song
         useEffect(() => {
@@ -47,7 +70,13 @@ const MusicCard = forwardRef(
             setIsPlaying(false);
             setProgress(0);
             setDuration(0);
-        }, [song.url]);
+            setHasPlayed(false);
+
+            if (song.title && song.previewUrl) loadDuration();
+
+            if (!song.previewUrl && song.title) setIsLoading(false);
+
+        }, [song.previewUrl, song]);
 
         // update progress thumb
         useEffect(() => {
@@ -55,6 +84,14 @@ const MusicCard = forwardRef(
                 progressRef.current.value = progress;
             }
         }, [progress]);
+
+        useEffect(() => {
+            if (progress >= 3 && isPlaying && !hasPlayed) {
+                setHasPlayed(true);
+
+                postPlay();
+            }
+        }, [progress, hasPlayed]);
 
         async function togglePlay() {
             const audio = audioRef.current;
@@ -108,6 +145,8 @@ const MusicCard = forwardRef(
                 return;
             }
 
+            if (isLoading) return;
+
             isDraggingCard.current = true;
 
             //horizontal position of pointer
@@ -144,22 +183,24 @@ const MusicCard = forwardRef(
 
         function handlePointerUp() {
             isDraggingCard.current = false;
+            setShowRecom(false);
+
 
             //25% screen width
             const swipeThreshold = window.innerWidth * 0.25;
 
             if (distance.current > swipeThreshold) {
-                console.log("liked")
+                postFeedback('like')
 
-                setSwipeStatus("liked");
+                // setSwipeStatus("liked");
                 //if onswipe isnt passed no error
                 onSwipe?.("right", song);
 
 
             } else if (distance.current < -swipeThreshold) {
-                console.log("disliked")
+                postFeedback('dislike')
 
-                setSwipeStatus("disliked");
+                // setSwipeStatus("disliked");
                 onSwipe?.("left", song);
 
 
@@ -180,6 +221,7 @@ const MusicCard = forwardRef(
             setShowRecom(!showRecom);
         }
 
+
         return (
 
             <Card
@@ -190,25 +232,29 @@ const MusicCard = forwardRef(
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
                 onPointerLeave={handlePointerUp}
-                className="rounded p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50"
+                className="flex flex-col rounded-xl p-5 bg-secondary touch-none user-none cursor-grab active:cursor-grabbing transition-transform duration-50 min-h-133.75"
                 aria-label={`Music card: ${song.title} by ${song.artist}`}
                 {...rest}>
 
-
-                <img
-                    src={song.albumImages?.[0]?.url ?? '/placeholder.jpg'}
-                    alt={`Album cover of ${song.title} from ${song.artist}`}
-                    draggable={false}
-                    className="object-cover w-64 h-64 mb-4 rounded-lg"
-                />
+                <div className={"flex justify-center"}>
+                    <img
+                        src={song.albumImages?.[0]?.url ?? '/placeholder.jpg'}
+                        alt={`Album cover of ${song.title} from ${song.artist}`}
+                        draggable={false}
+                        className="object-cover w-64 h-64 mb-4 rounded-lg"
+                    />
+                </div>
 
                 <div className="flex justify-between">
                     <div>
-                        <h3>{song.title}</h3>
-                        <h4>{song.artist}</h4>
+                        <h3>{song.title?.replace(/\s*\(feat\..*?\)/i, '') ?? 'Loading...'}</h3>
+                        <h4>{song.artist ?? 'This may take a while...'}</h4>
                     </div>
                     <Button
                         onClick={toggleRecom}
+                        aria-haspopup="dialog"
+                        aria-expanded={showRecom}
+                        aria-controls={`Recommendation-${song.id}`}
                         className="px-0! py-0! h-full bg-none! shadow-md shadow-primary"
                         aria-label={"Explanation of why this song is getting recommended"}>
 
@@ -220,27 +266,35 @@ const MusicCard = forwardRef(
 
                     {showRecom && (
                         <div
+                            role="dialog"
+                            aria-live="polite"
                             className="absolute bg-primary right-0 mt-6 mr-1 w-48 p-2 rounded shadow-lg">
-                            <p className="text-sm">{song.explanation}</p>
+                            <p className="text-sm">
+                                This song is recommended because it matches your preferred genres: {" "}
+                                {topGenres.map(g => `${genres[g.index]?.name} (${Math.round(g.score * 100)}%)`)
+                                    .join(" and ")}.
+                            </p>
                         </div>
                     )}
                 </div>
 
-                {/*<audio*/}
-                {/*    ref={audioRef}*/}
-                {/*    src={song.url}*/}
-                {/*    onTimeUpdate={updateProgress}*/}
-                {/*    onLoadedMetadata={() => {*/}
-                {/*        loadDuration();*/}
-                {/*        setIsLoading(false)*/}
-                {/*    }}*/}
-                {/*    onError={() => {*/}
-                {/*        setAudioError("Can't load audio")*/}
-                {/*        setIsLoading(false);*/}
-                {/*    }}*/}
-                {/*/>*/}
+                {
+                    song.previewUrl !== undefined && <audio
+                        ref={audioRef}
+                        src={song.previewUrl}
+                        onTimeUpdate={updateProgress}
+                        onLoadedMetadata={() => {
+                            loadDuration();
+                            setIsLoading(false)
+                        }}
+                        onError={() => {
+                            setAudioError("Can't load audio")
+                            setIsLoading(false);
+                        }}
+                    />
+                }
 
-                {/*{isLoading && <p className="text-sm">Loading audio....</p>}*/}
+                {isLoading && song.previewUrl !== undefined && <p className="text-sm">Loading audio....</p>}
 
                 {duration > 0 && (
                     <Slider
@@ -261,24 +315,31 @@ const MusicCard = forwardRef(
                     </p>
                 )}
 
-                <div className="flex justify-center">
-                    <Button
-                        onClick={togglePlay}
-                        className="mt-2 w-full" variant={"secondary"}
-                        aria-label={isPlaying ? "Pause song" : "Play song"}
-                    >
-                        {isPlaying ? "⏸" : "▶"}
-                    </Button>
-                </div>
+                {
+                    song.previewUrl !== undefined && <div className="flex justify-center">
+                        <Button
+                            onClick={togglePlay}
+                            className="mt-2 w-full" variant={"secondary"}
+                            aria-label={isPlaying ? "Pause song" : "Play song"}
+                        >
+                            {isPlaying ? "⏸" : "▶"}
+                        </Button>
+                    </div>
+                }
 
-
-                <div className="flex justify-between pt-2">
+                <div className="flex justify-between pt-2 mt-auto">
                     <Button size={"sm"} variant={"secondary"} className="text-2xl!"
-                            onClick={() => onSwipe("left", song)}
-                            aria-label={"Dislike song"}>😔</Button>
+                            onClick={() => {
+                                postFeedback('dislike');
+                                onSwipe("left", song);
+                            }}
+                            aria-label={`Dislike song ${song.title}`}>😔</Button>
                     <Button size={"sm"} variant={"secondary"} className="text-2xl!"
-                            onClick={() => onSwipe("right", song)}
-                            aria-label={"Like song"}>❤️</Button>
+                            onClick={() => {
+                                postFeedback('like');
+                                onSwipe("right", song);
+                            }}
+                            aria-label={`Like song ${song.title}`}>❤️</Button>
                 </div>
 
                 {feedback && (

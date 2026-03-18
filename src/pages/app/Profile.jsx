@@ -3,22 +3,78 @@ import {Link} from "react-router";
 import Card from "../../components/Card.jsx";
 import {useEffect, useState} from "react";
 import {fetchAPI} from "../../services/Fetch.js";
+import Toggle from "../../components/Toggle.jsx";
+import {useNavigate, useLocation} from "react-router";
 
 function Profile() {
     const [user, setUser] = useState({});
-    let image = '/placeholder.jpg';
+    const [image, setImage] = useState('/placeholder.jpg');
+
+    const [bubbleItems, setBubbleItems] = useState([]);
+
+    // Admin Toggle
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isAdmin = location.pathname.startsWith("/app/admin");
 
     const getGenres = async () => {
         const res = await fetchAPI('/auth/me');
 
         setUser(res);
 
-        if (user.imageUrl !== undefined) image = user.imageUrl;
+        if (res.imageUrl) {
+            const img = new Image();
+
+            img.onload = () => setImage(res.imageUrl);
+            img.onerror = () => setImage('/placeholder.jpg');
+
+            img.src = res.imageUrl;
+        } else {
+            setImage('/placeholder.jpg');
+        }
     }
 
     useEffect(() => {
         getGenres();
     }, []);
+
+    const getGenreInfo = async () => {
+        try {
+            const data = await fetchAPI('/sliders', 'GET');
+
+            console.log(data);
+
+            const sliders = data.sliders;
+
+            const sortedGenres = Object.entries(sliders)
+                .map(([name, score]) => ({name, score}))
+                .sort((a, b) => b.score - a.score);
+
+            const topGenres = sortedGenres.slice(0, 2);
+
+            setBubbleItems(topGenres);
+
+
+        } catch (error) {
+            console.error("Error fetching genres:", error);
+        }
+    }
+
+    useEffect(() => {
+        getGenreInfo();
+    }, []);
+
+
+    // Admin Toggle
+    const handleToggleChange = (e) => {
+        const newValue = e.target.checked;
+
+        if (newValue) {
+            navigate("/app/admin/profile");
+        } else {
+            navigate("/app/profile");
+        }
+    };
 
     return (
         <>
@@ -32,6 +88,16 @@ function Profile() {
                             <Button variant={"outline"} size={"sm"} as={"link"} to={"/app/profile/edit"}>Edit
                                 Profile</Button>
                             <Button size={"sm"} as={"link"} to={"/app/settings"}>Settings</Button>
+
+                            {/*Admin Toggle*/}
+                            {user.role === "admin" && (
+                                <div
+                                    className="col-span-2 flex items-center justify-between rounded-xl bg-secondary px-4 py-3">
+                                    <span>Admin dashboard</span>
+                                    <Toggle checked={isAdmin} onChange={handleToggleChange}/>
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>
@@ -46,46 +112,23 @@ function Profile() {
                         <span className={"text-sm text-outline"}>Genres you listened to the most!</span>
                     </div>
                     <div className={"grid grid-cols-2 gap-2.5"}>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Genre Title</span>
-                        </div>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Genre Title</span>
-                        </div>
+                        {
+                            bubbleItems.map((item) => {
+                                return (
+                                    <div key={item.name}
+                                         className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
+                                        <img src={`/genres/${item.name}.webp`} alt=""
+                                             className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
+                                        <span className={"col-start-3 col-end-8 capitalize"}>{item.name}</span>
+                                    </div>
+                                );
+                            })
+                        }
                     </div>
-
-                    <div>
-                        <h3 className={"text-xl!"}>Top artists</h3>
-                        <span className={"text-sm text-outline"}>Artists you listened to the most!</span>
-                    </div>
-                    <div className={"grid grid-cols-2 gap-2.5"}>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Artist Name</span>
-                        </div>
-                        <div className={"grid grid-cols-5 items-center gap-2.5 bg-secondary rounded-xl"}>
-                            <img src="/placeholder.jpg" alt=""
-                                 className={"col-start-1 col-end-3 aspect-square object-cover rounded-l-xl"}/>
-                            <span className={"col-start-3 col-end-8"}>Artist Name</span>
-                        </div>
-                    </div>
-
                     <Button as={"link"} to={"/app/bubble"}><i className={"mr-2.5 fa-solid fa-chart-simple"}></i>Visualise</Button>
                 </div>
             </section>
 
-            <section className={"pb-10"}>
-                <div className={"flex flex-col gap-2.5"}>
-                    <h2 className={"text-2xl!"}>Friends</h2>
-                    <Button><i className={"mr-2.5 fa-solid fa-people-group"}></i>Friends list</Button>
-                    <Button><i className={"mr-2.5 fa-solid fa-user-plus"}></i>Friend requests</Button>
-                </div>
-            </section>
         </>
     );
 }
