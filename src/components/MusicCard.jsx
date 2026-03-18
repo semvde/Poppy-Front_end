@@ -71,7 +71,12 @@ const MusicCard = forwardRef(
             setProgress(0);
             setDuration(0);
             setHasPlayed(false);
-        }, [song.url]);
+
+            if (song.title && song.previewUrl) loadDuration();
+
+            if (!song.previewUrl && song.title) setIsLoading(false);
+
+        }, [song.previewUrl, song]);
 
         // update progress thumb
         useEffect(() => {
@@ -324,10 +329,16 @@ const MusicCard = forwardRef(
 
                 <div className="flex justify-between pt-2 mt-auto">
                     <Button size={"sm"} variant={"secondary"} className="text-2xl!"
-                            onClick={() => onSwipe("left", song)}
+                            onClick={() => {
+                                postFeedback('dislike');
+                                onSwipe("left", song);
+                            }}
                             aria-label={`Dislike song ${song.title}`}>😔</Button>
                     <Button size={"sm"} variant={"secondary"} className="text-2xl!"
-                            onClick={() => onSwipe("right", song)}
+                            onClick={() => {
+                                postFeedback('like');
+                                onSwipe("right", song);
+                            }}
                             aria-label={`Like song ${song.title}`}>❤️</Button>
                 </div>
 

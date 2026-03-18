@@ -5,12 +5,21 @@ import {fetchAPI} from "../services/Fetch.js";
 function CardStack() {
     const [message, setMessage] = useState("");
 
+    const [songs, setSongs] = useState([{}])
+
     //smoother swipe
     const [swipedCards, setSwipedCards] = useState({});
 
+    const [loading, setLoading] = useState(true);
+    const [loadingMessage, setLoadingMessage] = useState('Loading more recommendations...');
+
 
     const getRecommendations = async () => {
+        setLoadingMessage('Loading more recommendations...')
+        setLoading(true);
         const {vector} = await fetchAPI('/profile/compute', 'POST')
+
+        console.log(vector);
 
         const {tracks} = await fetchAPI('/recommendations', 'POST', {
             'profileVector': vector,
@@ -24,15 +33,14 @@ function CardStack() {
         for (const track of tracks) {
             const {url} = await fetchAPI(`/tracks/${track.track._id}/preview`);
 
-            track.previewUrl = url;
+            track.track.previewUrl = url;
         }
 
         console.log(tracks);
 
         setSongs(tracks);
+        setLoading(false);
     }
-
-    const [songs, setSongs] = useState([{}])
 
     function handleSwipe(direction, song, index) {
 
@@ -72,6 +80,16 @@ function CardStack() {
     useEffect(() => {
         getRecommendations();
     }, []);
+
+    useEffect(() => {
+        if (songs.length === 0 && !loading) {
+            getRecommendations().then(() => {
+                if (songs.length === 0) {
+                    setLoadingMessage('You have listened to every possible song... go touch grass 🥀')
+                }
+            });
+        }
+    }, [songs.length]);
 
     return (
 
@@ -118,7 +136,7 @@ function CardStack() {
 
                 {songs.length === 0 && (
                     <div className="text-center text-gray-400 text-xl">
-                        Loading more recommendations
+                        {loadingMessage}
                     </div>
                 )}
             </div>
