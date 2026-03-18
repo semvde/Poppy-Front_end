@@ -149,7 +149,7 @@ function AdminLayout() {
                         <i className="fa-solid fa-users"></i>
                     </NavLink>
 
-                    <NavLink to="/app/admin/top/songs" className="flex items-center" aria-label="Top">
+                    <NavLink to="/app/admin/top/artists" className="flex items-center" aria-label="Top">
                         <i className="fa-solid fa-trophy"></i>
                     </NavLink>
 

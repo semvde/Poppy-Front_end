@@ -19,6 +19,7 @@ import {useEffect, useState} from "react";
 import {fetchAPI} from "./services/Fetch.js";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import Dashboard from "./pages/app/admin/Dashboard.jsx";
+import Artists from "./pages/app/admin/Top/Artists.jsx";
 
 const router = createBrowserRouter([
     {
@@ -77,7 +78,7 @@ const router = createBrowserRouter([
             {
                 path: "/app/friends",
                 element: <Friends/>,
-               
+
             },
             {
                 path: "/app/explore",
@@ -102,6 +103,14 @@ const router = createBrowserRouter([
             {
                 path: "profile",
                 element: <Profile/>
+            },
+            {
+                path: "top/artists",
+                element: <Artists/>
+            },
+            {
+                path: "settings",
+                element: <Settings/>
             }
         ]
     }

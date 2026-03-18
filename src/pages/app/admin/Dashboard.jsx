@@ -74,7 +74,8 @@ function Dashboard() {
         <>
             <section className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-5">
 
-                <Button className="flex flex-col items-center gap-3 p-5 lg:p-3 rounded-xl">
+                <Button as="link" to="/app/admin/Top/Artists"
+                        className="flex flex-col items-center gap-3 p-5 lg:p-3 rounded-xl">
                     <h1 className="text-xl! lg:text-base text-center">
                         Top Artist
                     </h1>
