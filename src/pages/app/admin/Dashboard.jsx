@@ -81,7 +81,7 @@ function Dashboard() {
                     </h1>
 
                     <img
-                        src="/placeholder.jpg"
+                        src="/artists/bad-bunny.jpg"
                         alt=""
                         className="w-full aspect-square object-cover rounded"
                     />
@@ -94,8 +94,8 @@ function Dashboard() {
                     </h1>
 
                     <img
-                        src="/placeholder.jpg"
-                        alt=""
+                        src="/genres/pop.webp"
+                        alt="Top genre"
                         className="w-full aspect-square object-cover rounded"
                     />
                 </Button>

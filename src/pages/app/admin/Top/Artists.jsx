@@ -24,7 +24,7 @@ function Artists() {
             <section>
                 <Card className="flex flex-col items-center">
                     <h1 className="text-xl!">{topArtist.name}</h1>
-                    <img src="/placeholder.jpg" alt={topArtist.name} className="w-32 h-32 object-cover"/>
+                    <img src="/artists/bad-bunny.jpg" alt={topArtist.name} className="w-32 h-32 object-cover"/>
                 </Card>
 
                 <h1 className="text-xl! p-2.5">Top 10 Liked Artists</h1>

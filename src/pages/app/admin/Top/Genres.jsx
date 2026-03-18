@@ -24,7 +24,7 @@ function Genres() {
             <section>
                 <Card className="flex flex-col items-center">
                     <h1 className="text-xl!">{topGenres.name}</h1>
-                    <img src="/placeholder.jpg" alt={topGenres.name} className="w-32 h-32 object-cover"/>
+                    <img src="/genres/pop.webp" alt={topGenres.name} className="w-32 h-32 object-cover"/>
                 </Card>
 
                 <h1 className="text-xl! p-2.5">Top 10 Liked Genres</h1>
