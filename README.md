@@ -83,7 +83,7 @@ cd poppy-front_end
 
 - Copy and paste the following contents into a .env file (inside the express folder):
 
-```
+```dotenv
 VITE_BASE_URL=http://localhost:5173
 VITE_API_URL=http://145.24.237.95:8000/api/v1
 VITE_API_KEY=<Instruction on how to get an API key are in the back-end repo>
