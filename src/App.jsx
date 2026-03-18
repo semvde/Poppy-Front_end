@@ -19,6 +19,7 @@ import {useEffect, useState} from "react";
 import {fetchAPI} from "./services/Fetch.js";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import Dashboard from "./pages/app/admin/Dashboard.jsx";
+import FriendRequest from "./pages/app/FriendRequest.jsx";
 
 const router = createBrowserRouter([
     {
@@ -77,7 +78,12 @@ const router = createBrowserRouter([
             {
                 path: "/app/friends",
                 element: <Friends/>,
-               
+
+            },
+            {
+                path: "/app/friends/requests",
+                element: <FriendRequest/>,
+                handle: {page: "subpage"}
             },
             {
                 path: "/app/explore",
