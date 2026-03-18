@@ -74,26 +74,28 @@ function Dashboard() {
         <>
             <section className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-5">
 
-                <Button className="flex flex-col items-center gap-3 p-5 lg:p-3 rounded-xl">
+                <Button as="link" to="/app/admin/top/artists"
+                        className="flex flex-col items-center gap-3 p-5 lg:p-3 rounded-xl">
                     <h1 className="text-xl! lg:text-base text-center">
                         Top Artist
                     </h1>
 
                     <img
-                        src="/placeholder.jpg"
+                        src="/artists/bad-bunny.jpg"
                         alt=""
                         className="w-full aspect-square object-cover rounded"
                     />
                 </Button>
 
-                <Button className="flex flex-col items-center gap-3 p-5 lg:p-3 rounded-xl">
+                <Button as="link" to="/app/admin/top/genres"
+                        className="flex flex-col items-center gap-3 p-5 lg:p-3 rounded-xl">
                     <h1 className="text-xl! lg:text-base text-center">
                         Top genre
                     </h1>
 
                     <img
-                        src="/placeholder.jpg"
-                        alt=""
+                        src="/genres/pop.webp"
+                        alt="Top genre"
                         className="w-full aspect-square object-cover rounded"
                     />
                 </Button>
