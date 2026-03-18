@@ -8,7 +8,7 @@ import {useNavigate, useLocation} from "react-router";
 
 function Profile() {
     const [user, setUser] = useState({});
-    let image = '/placeholder.jpg';
+    const [image, setImage] = useState('/placeholder.jpg');
 
     const [bubbleItems, setBubbleItems] = useState([]);
 
@@ -22,7 +22,16 @@ function Profile() {
 
         setUser(res);
 
-        if (user.imageUrl !== undefined) image = user.imageUrl;
+        if (res.imageUrl) {
+            const img = new Image();
+
+            img.onload = () => setImage(res.imageUrl);
+            img.onerror = () => setImage('/placeholder.jpg');
+
+            img.src = res.imageUrl;
+        } else {
+            setImage('/placeholder.jpg');
+        }
     }
 
     useEffect(() => {
