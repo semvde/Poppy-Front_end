@@ -71,8 +71,12 @@ const MusicCard = forwardRef(
             setProgress(0);
             setDuration(0);
             setHasPlayed(false);
-            
-        }, [song.previewUrl]);
+
+            if (song.title) loadDuration();
+
+            if (!song.previewUrl && song.title) setIsLoading(false);
+
+        }, [song.previewUrl, song]);
 
         // update progress thumb
         useEffect(() => {
