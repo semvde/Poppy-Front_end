@@ -20,23 +20,26 @@ function Artists() {
 
     return (
         <>
-            <Card className="flex flex-col items-center">
-                <h1 className="text-xl!">{topArtist.name}</h1>
-                <img src="/placeholder.jpg" alt={topArtist.name} className="w-32 h-32 object-cover"/>
-            </Card>
 
-            <h1 className="text-xl! p-2.5">Top 10 Liked Artists</h1>
+            <section>
+                <Card className="flex flex-col items-center">
+                    <h1 className="text-xl!">{topArtist.name}</h1>
+                    <img src="/placeholder.jpg" alt={topArtist.name} className="w-32 h-32 object-cover"/>
+                </Card>
 
-            <ol className="list-decimal pl-5 space-y-2.5">
-                {top10.map((artist, index) => (
-                    <li key={index}>
-                        <Card className="flex justify-between">
-                            <span>{artist.name}</span>
-                            <span>{artist.likes}%</span>
-                        </Card>
-                    </li>
-                ))}
-            </ol>
+                <h1 className="text-xl! p-2.5">Top 10 Liked Artists</h1>
+
+                <ol className="list-decimal pl-5 space-y-2.5">
+                    {top10.map((artist, index) => (
+                        <li key={index}>
+                            <Card className="flex justify-between">
+                                <span>{artist.name}</span>
+                                <span>{artist.likes}%</span>
+                            </Card>
+                        </li>
+                    ))}
+                </ol>
+            </section>
         </>
     );
 }
