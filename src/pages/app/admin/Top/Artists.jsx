@@ -1,4 +1,8 @@
 import Card from "../../../../components/Card.jsx";
+import {Doughnut} from "react-chartjs-2";
+import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Artists() {
 
@@ -17,6 +21,41 @@ function Artists() {
 
     const top10 = artists.slice(0, 10);
     const topArtist = top10[0];
+
+    const chartData = {
+        labels: top10.map((artist) => artist.name),
+        datasets: [
+            {
+                label: "Likes per artist",
+                data: top10.map((artist) => artist.likes),
+                backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#4BC0C0",
+                    "#9966FF",
+                    "#FF9F40",
+                    "#8DD17E",
+                    "#C9CBCF",
+                    "#E76F51",
+                    "#2A9D8F",
+                ],
+                borderWidth: 2,
+            },
+        ],
+    };
+
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+                labels: {
+                    color: "#ffffff",
+                },
+            },
+        },
+    };
 
     return (
         <>
@@ -39,6 +78,13 @@ function Artists() {
                         </li>
                     ))}
                 </ol>
+            </section>
+
+            <section>
+                <h1 className="text-xl! flex justify-center p-5">Visual</h1>
+                <Card className="p-5">
+                    <Doughnut data={chartData} options={chartOptions}/>
+                </Card>
             </section>
         </>
     );
