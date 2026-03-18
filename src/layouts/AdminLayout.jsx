@@ -93,7 +93,7 @@ function AdminLayout() {
                             <NavLink to="/app/admin/users">Users</NavLink>
 
                             <div className="relative">
-                                <Button as={"link"} onClick={() => setTopOpen(!topOpen)}>
+                                <Button type="button" onClick={() => setTopOpen(!topOpen)}>
                                     Top
                                     <i className="fa-solid fa-chevron-down text-xs"></i>
                                 </Button>
