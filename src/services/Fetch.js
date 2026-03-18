@@ -8,7 +8,7 @@ export async function fetchAPI(endpoint, method = 'GET', body) {
         "X-API-Key": API_KEY
     };
 
-    if (method === 'POST' || method === 'PUT') {
+    if (method === 'POST' || (method === 'PUT' && !(body instanceof FormData))) {
         headers["Content-Type"] = "application/json";
     }
 
