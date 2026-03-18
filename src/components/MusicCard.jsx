@@ -72,7 +72,7 @@ const MusicCard = forwardRef(
             setDuration(0);
             setHasPlayed(false);
 
-            if (song.title) loadDuration();
+            if (song.title && song.previewUrl) loadDuration();
 
             if (!song.previewUrl && song.title) setIsLoading(false);
 
