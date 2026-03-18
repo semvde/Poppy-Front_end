@@ -2,7 +2,7 @@
 
 Grow out of your musical bubble!
 
-:globe_with_meridians: Check out the live version: NO VERSION AVAILABLE YET
+:globe_with_meridians: Check out the live version: http://145.24.237.244/
 
 <details>
     <summary>Table of Contents</summary>
@@ -47,7 +47,20 @@ front-end team and a back-end team.
 
 ## :sparkles: Functionality
 
-W.I.P.
+### Recommendations
+
+- Get recommendations based on your music preference
+- Like or dislike the recommendations you get to furhter improve your algorithm
+
+### Customisable
+
+- Change your algoritm to your liking by choosing how much recommendations are related to your preferences
+- Block genres and artists to not get those recommended
+
+### Friends
+
+- Find friends on the platform and view their algorithm through your eyes
+- Grow your preferences with your friends preferences
 
 ## :rocket: Getting started
 
@@ -67,6 +80,14 @@ cd poppy-front_end
 ```
 
 2. Setup dependencies and front-end assets
+
+- Copy and paste the following contents into a .env file (inside the express folder):
+
+```
+VITE_BASE_URL=http://localhost:5173
+VITE_API_URL=http://145.24.237.95:8000/api/v1
+VITE_API_KEY=<Instruction on how to get an API key are in the back-end repo>
+```
 
 ```sh
 npm install
@@ -100,7 +121,24 @@ Poppy.
 
 ### Usage
 
-W.I.P.
+This project is a Vite + React front-end for Poppy. The app is structured around routes, layouts, shared components, and
+a small service layer for API communication.
+
+#### Project structure (important files)
+
+- `src/main.jsx` initializes the React app.
+- `src/App.jsx` defines the main route structure and page flow.
+- `src/layouts/` contains layout wrappers:
+    - `WebsiteLayout.jsx` for public pages
+    - `AppLayout.jsx` for authenticated app pages
+    - `AdminLayout.jsx` for admin pages
+- `src/pages/website/` contains public pages (landing, login, register).
+- `src/pages/app/` contains authenticated pages (home, explore, profile, settings, etc.).
+- `src/pages/app/admin/` contains admin-only pages.
+- `src/components/` contains reusable UI components (cards, buttons, toggles, sliders, form fields, etc.).
+- `src/components/ProtectedRoute.jsx` handles route protection for authenticated sections.
+- `src/Contexts.jsx` manages shared client-side state via React Context.
+- `src/services/Fetch.js` centralizes API requests and should remain the single source for fetch logic.
 
 ## :scroll: License
 
