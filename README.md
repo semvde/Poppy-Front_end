@@ -2,7 +2,7 @@
 
 Grow out of your musical bubble!
 
-:globe_with_meridians: Check out the live version: NO VERSION AVAILABLE YET
+:globe_with_meridians: Check out the live version: http://145.24.237.244/
 
 <details>
     <summary>Table of Contents</summary>
@@ -47,7 +47,20 @@ front-end team and a back-end team.
 
 ## :sparkles: Functionality
 
-W.I.P.
+### Recommendations
+
+- Get recommendations based on your music preference
+- Like or dislike the recommendations you get to furhter improve your algorithm
+
+### Customisable
+
+- Change your algoritm to your liking by choosing how much recommendations are related to your preferences
+- Block genres and artists to not get those recommended
+
+### Friends
+
+- Find friends on the platform and view their algorithm through your eyes
+- Grow your preferences with your friends preferences
 
 ## :rocket: Getting started
 
