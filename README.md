@@ -24,6 +24,7 @@ Grow out of your musical bubble!
                 <li><a href="#usage">Usage</a></li>
             </ol>
         </li>
+        <li><a href="#flying_saucer-deployment">Deployment</a></li>
         <li><a href="#scroll-license">License</a></li>
     </ol>
 </details>
@@ -139,6 +140,9 @@ a small service layer for API communication.
 - `src/components/ProtectedRoute.jsx` handles route protection for authenticated sections.
 - `src/Contexts.jsx` manages shared client-side state via React Context.
 - `src/services/Fetch.js` centralizes API requests and should remain the single source for fetch logic.
+
+## :flying_saucer: Deployment
+Poppy has been deployed on a VPS provided by Rotterdam University of Applied Sciences that is running Ubuntu with Nginx. [These](https://github.com/HR-CMGT/PRG06-2025-2026/tree/main/guides/deployment-react-vite) instructions where used to deploy the project.
 
 ## :scroll: License
 
